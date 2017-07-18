@@ -1,8 +1,6 @@
 /* 
 TO DO:
 
-test
-
 Parts:
     Need to come out of zombies on death
     need to be picked up by player and counted
@@ -37,6 +35,7 @@ Low priority:
 var player;
 var zombies = [];
 var bullets = [];
+var parts = [];
 var playerDead = false;
 var NUM_ZOMBIES = 200;
 
@@ -62,11 +61,12 @@ function draw() {
     player.show();
 
     //do stuff with zombies
-    for (var i = 0; i < zombies.length; i++) {
+    for (var i = zombies.length - 1; i >= 0; i--) {
         zombies[i].show();
         zombies[i].move(player.pos.x, player.pos.y);
         if(zombies[i].dead()){
             player.killCount++;
+            parts = parts.concat(zombies[i].die());
             zombies.splice(i, 1);
         }
 
@@ -78,6 +78,15 @@ function draw() {
     //no need for recursive spawnZombies function
     if(zombies.length < NUM_ZOMBIES)
         spawnZombies(1);
+
+    //do stuff with parts
+    for(var i = 0; i < parts.length; i++) {
+        parts[i].show();
+        parts[i].update();
+        if(player.pickUp(parts[i])){
+            parts.splice(i, 1);
+        }
+    }
 
     //do stuff with bullets
     for (var i = 0; i < bullets.length; i++) {

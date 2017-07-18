@@ -8,12 +8,16 @@ function Zombie(posX, posY, kills) {
     this.canAttack = true;
     this.typeChance = kills / 5000;
     this.color = color(127, 127, 0);
+    this.parts = random(0,5); //amount of parts held by zombie
 
+    //randomly change zombie type
     if(random() < this.typeChance) {
         console.log("special zombie spawned");
         this.color = color(0, 0, 200);
         this.health = 500;
         this.vel = 1;
+        this.strength = 75;
+        this.parts = random(5,10);
         if(random() < .2) {
             this.vel = 10;
             this.r = 25;
@@ -56,4 +60,12 @@ Zombie.prototype.attack = function(player) {
         setTimeout(() => this.canAttack = true, this.attackSpeed);
 
     }
+}
+
+Zombie.prototype.die = function() {
+    var parts = [];
+    for(var i = 0; i < this.parts; i++) {
+        parts.push(new Part(this.pos.x, this.pos.y));
+    }
+    return parts;
 }

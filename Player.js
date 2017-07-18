@@ -7,6 +7,7 @@ function Player() {
     this.firingSpeed = 2000; //in milliseconds
     this.canShoot = true;
     this.killCount = 0;
+    this.parts = 0;
 }
 
 Player.prototype.show = function() {
@@ -51,6 +52,9 @@ Player.prototype.showHealth = function() {
     push();
         fill(0);
         text("HP: ", posX, posY);
+        textSize(15);
+        textStyle(BOLD);
+        text("Parts: " + this.parts, posX-75, posY);
         fill(255);
         rect(posX+25, posY-15, healthBarLen, 20);
         fill(255,0,0);
@@ -65,4 +69,14 @@ Player.prototype.startOver = function() {
     this.health = 100;
     this.firingSpeed = 2000; //in milliseconds
     this.killCount = 0;
+    this.parts = 0;
+}
+
+Player.prototype.pickUp = function(part) {
+    var d = dist(this.pos.x, this.pos.y, part.pos.x, part.pos.y);
+    var get = d < this.r + part.r*2;
+    if(get) {
+        this.parts++;
+    }
+    return get;
 }
