@@ -180,14 +180,19 @@ function restart() {
     player.startOver();
     
     //kill and respawn all zombies
-    for(var i = 0; i < zombies.length; i++) {
+    for(var i = zombies.length; i >= 0; i--) {
         zombies.splice(i,1);
     }
     spawnZombies(NUM_ZOMBIES);
 
     //remove all bullets
-    for(var k = 0; k < bullets.length; k++) {
-        bullets.splice(k, 1);
+    for(var j = bullets.length; j >= 0; j--) {
+        bullets.splice(j, 1);
+    }
+
+    //remove all parts
+    for(var k = parts.length - 1; k >=0; k--) {
+        parts.splice(k, 1);
     }
 
     loop();

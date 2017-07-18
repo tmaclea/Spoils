@@ -8,7 +8,7 @@ function Zombie(posX, posY, kills) {
     this.canAttack = true;
     this.typeChance = kills / 5000;
     this.color = color(127, 127, 0);
-    this.parts = random(0,5); //amount of parts held by zombie
+    this.parts = random(1,5); //amount of parts held by zombie
 
     //randomly change zombie type
     if(random() < this.typeChance) {
@@ -18,12 +18,6 @@ function Zombie(posX, posY, kills) {
         this.vel = 1;
         this.strength = 75;
         this.parts = random(5,10);
-        if(random() < .2) {
-            this.vel = 10;
-            this.r = 25;
-            this.health = 1000;
-            this.color = (127, 0, 0);
-        }
     }
 }
 

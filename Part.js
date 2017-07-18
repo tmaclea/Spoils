@@ -1,7 +1,7 @@
 function Part(startX, startY) {
     this.pos = createVector(startX, startY);
     this.r = 5;
-    this.vel = createVector(random(-5,5), random(-5,5));
+    this.vel = createVector(random(-7,7), random(-7,7));
 
     this.friction = .8;
 }
