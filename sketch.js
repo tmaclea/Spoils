@@ -1,10 +1,6 @@
 /* 
 TO DO:
 
-draw grid on play area
-
-show health bar, game over text over top of zombies
-
 Parts:
     Need to come out of zombies on death
     need to be picked up by player and counted
@@ -26,7 +22,6 @@ Zombies:
     Death animation
     better movement
     lunge?
-
 
     types:
         A random (but zipfy) variation of zombie types
