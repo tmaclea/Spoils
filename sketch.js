@@ -59,13 +59,10 @@ function draw() {
     // use translate function to always show player in center
     translate(width/2-player.pos.x, height/2-player.pos.y);
 
-    player.show();
-    player.showHealth();
+    //create grid lines
+    drawGrid(-width*2, -height*2, width*2, height*2);
 
-    //game over when health is 0
-    if(player.health <= 0) {
-        gameOver();
-    }
+    player.show();
 
     //do stuff with zombies
     for (var i = 0; i < zombies.length; i++) {
@@ -102,7 +99,15 @@ function draw() {
         }
     }
 
+    //show health
+    player.showHealth();
+    //game over when health is 0
+    if(player.health <= 0) {
+        gameOver();
+    }
+
     // movement of player
+    //weird stuff happens if this isn't last in draw
     if(keyIsDown(87)) {player.move('up');} // w key
     if(keyIsDown(65)) {player.move('left');} // a key
     if(keyIsDown(83)) {player.move('down');} // s key
@@ -136,6 +141,19 @@ function spawnZombies(num) {
             zombies.push(new Zombie(randW, randH, player.killCount));
         }
     }
+}
+
+function drawGrid(topLeftX, topLeftY, botRightX, botRightY) {
+    var LINE_DIST = 200;
+    push();
+        stroke(126);
+        for(var x = topLeftX; x <= botRightX; x += LINE_DIST) {
+            line(x, topLeftY, x, botRightY);
+        }
+        for(var y = topLeftY; y <= botRightY; y += LINE_DIST) {
+            line(topLeftX, y, botRightX, y);
+        }
+    pop();
 }
 
 function gameOver() {

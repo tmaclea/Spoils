@@ -4,7 +4,7 @@ function Player() {
     this.vel = 3;
     this.maxHealth = 100;
     this.health = 100;
-    this.firingSpeed = 20; //in milliseconds
+    this.firingSpeed = 2000; //in milliseconds
     this.canShoot = true;
     this.killCount = 0;
 }
@@ -16,8 +16,8 @@ Player.prototype.show = function() {
 
 Player.prototype.move = function(dir) {
     //contrain player to edge of play area
-    this.pos.y = constrain(this.pos.y, -height*2, height*2);
-    this.pos.x = constrain(this.pos.x, -width*2, width*2);
+    this.pos.y = constrain(this.pos.y, -height*2+this.r, height*2-this.r);
+    this.pos.x = constrain(this.pos.x, -width*2+this.r, width*2-this.r);
 
     switch(dir) {
         case 'up': 
