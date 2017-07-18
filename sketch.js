@@ -1,6 +1,8 @@
 /* 
 TO DO:
 
+test
+
 Parts:
     Need to come out of zombies on death
     need to be picked up by player and counted
