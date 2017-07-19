@@ -1,7 +1,7 @@
 /* 
 TO DO:
 
-reload cooldown bar near player
+add border radius to health and reload bars
 
 bugs:
 
@@ -107,6 +107,9 @@ function draw() {
 
     //show health
     player.showHealth();
+    if(!player.canShoot) { 
+        player.reload(); 
+    }
     //game over when health is 0
     if(player.health <= 0) {
         gameOver();

@@ -3,7 +3,7 @@ function Zombie(posX, posY, kills) {
     this.r = 16;
     this.vel = .05;
     this.health = 100;
-    this.strength = 99;
+    this.strength = 50;
     this.attackSpeed = 2000;
     this.canAttack = true;
     this.typeChance = kills / 5000;
