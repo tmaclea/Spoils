@@ -49,6 +49,8 @@ Player.prototype.showHealth = function() {
     var posX = this.pos.x+(width/2)-150;
     var posY = this.pos.y+(height/2)-20;
     var healthBarLen = 110;
+    //establish minimum health
+    if(this.health < 0) {this.health = 0;}
     push();
         fill(0);
         text("HP: ", posX, posY);

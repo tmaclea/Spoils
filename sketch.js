@@ -3,6 +3,8 @@ TO DO:
 
 reload cooldown bar near player
 
+bugs:
+
 Later on:
     need to be able to build base
     within the base, ability to upgrade:
