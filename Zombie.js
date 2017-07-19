@@ -10,6 +10,7 @@ function Zombie(posX, posY, kills) {
     this.color = color(127, 127, 0);
     this.parts = random(1,5); //amount of parts held by zombie
     this.xoff = 0; //x offset for perlin noise
+    this.yoff = 0; //y offset for perlin noise
     this.wobble = random(1000); //magnitude of the wobble
 
     //randomly change zombie type
@@ -29,8 +30,9 @@ Zombie.prototype.show = function() {
 }
 
 Zombie.prototype.move = function(playerX, playerY) {
-    var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
-    this.xoff += random(-0.3, 0.3); //speed of the wobble
+    var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
+    this.xoff += random(-0.2, 0.2); //speed of the wobble
+    this.yoff += random(-0.2, 0.2);
     this.wobble = random(1000);
     player.sub(this.pos);
     player.setMag(this.vel);
