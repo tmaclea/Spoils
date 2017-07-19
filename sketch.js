@@ -1,6 +1,8 @@
 /* 
 TO DO:
 
+reload cooldown bar near player
+
 Later on:
     need to be able to build base
     within the base, ability to upgrade:
@@ -59,14 +61,15 @@ function draw() {
     for (var i = zombies.length - 1; i >= 0; i--) {
         zombies[i].show();
         zombies[i].move(player.pos.x, player.pos.y);
+
+        if(zombies[i].isInRange(player)) {
+            zombies[i].attack(player);
+        }
+
         if(zombies[i].dead()){
             player.killCount++;
             parts = parts.concat(zombies[i].die());
             zombies.splice(i, 1);
-        }
-
-        if(zombies[i].isInRange(player)) {
-            zombies[i].attack(player);
         }
     }
     //make sure there are always 200 zombies
