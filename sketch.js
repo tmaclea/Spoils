@@ -1,9 +1,7 @@
 /* 
 TO DO:
 
-add border radius to health and reload bars
-
-bugs:
+player death animation
 
 Later on:
     need to be able to build base
@@ -13,6 +11,7 @@ Later on:
         heath upgrades / healing
         bullet damage
         max base health
+        parts bag upgrade
     within the base, ability to make:
         armor?
         bullets?
@@ -66,6 +65,10 @@ function draw() {
 
         if(zombies[i].isInRange(player)) {
             zombies[i].attack(player);
+        }
+
+        if(zombies[i].health < zombies[i].maxHealth) {
+            zombies[i].showHealth();
         }
 
         if(zombies[i].dead()){

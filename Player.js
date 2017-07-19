@@ -8,6 +8,7 @@ function Player() {
     this.canShoot = true;
     this.killCount = 0;
     this.parts = 0;
+    this.maxParts = 20;
     this.frameCount = 0;
     this.reloadText = ".";
 }
@@ -49,29 +50,26 @@ Player.prototype.shoot = function(pos, shootX, shootY) {
 }
 
 Player.prototype.showHealth = function() {
-    var posX = this.pos.x+(width/2)-150;
-    var posY = this.pos.y+(height/2)-20;
-    var healthBarLen = 110;
+    var posX = this.pos.x+(width/2);
+    var posY = this.pos.y+(height/2);
 
     //establish minimum health
     if(this.health < 0) {this.health = 0;}
 
     push();
-        fill(0);
-        text("HP: ", posX, posY);
-        textSize(15);
-        textStyle(BOLD);
-        text("Parts: " + this.parts, posX-75, posY);
-        fill(255);
-        rect(posX+25, posY-15, healthBarLen, 20);
-        fill(255,0,0);
-        rect(posX+25, posY-15, floor(healthBarLen*(this.health/this.maxHealth)), 20);
+        noStroke();
+        //health bar
+        fill(255,80,80);
+        rect(posX-width, posY-10, floor(width*(this.health/this.maxHealth)), 10);
+        //parts bag
+        fill(255,255,80);
+        rect(posX-width, posY-20, floor(width*(this.parts/this.maxParts)), 10);
     pop();
 }
 
 Player.prototype.pickUp = function(part) {
     var d = dist(this.pos.x, this.pos.y, part.pos.x, part.pos.y);
-    var get = d < this.r + part.r*2;
+    var get = d < this.r + part.r*2 && this.parts < this.maxParts;
     if(get) {
         this.parts++;
     }

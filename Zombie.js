@@ -2,7 +2,8 @@ function Zombie(posX, posY, kills) {
     this.pos = createVector(posX, posY);
     this.r = 16;
     this.vel = .05;
-    this.health = 100;
+    this.health = 200;
+    this.maxHealth = 200;
     this.strength = 50;
     this.attackSpeed = 2000;
     this.canAttack = true;
@@ -60,6 +61,22 @@ Zombie.prototype.attack = function(player) {
         setTimeout(() => this.canAttack = true, this.attackSpeed);
 
     }
+}
+
+Zombie.prototype.showHealth = function() {
+    var posX = this.pos.x - 15;
+    var posY = this.pos.y - 25;
+    var healthBarLen = 30;
+
+    //establish minimum health
+    if(this.health < 0) {this.health = 0;}
+
+    push();
+        noFill();
+        rect(posX, posY, healthBarLen, 5, 10);
+        fill(255,80,80);
+        rect(posX, posY, floor(healthBarLen*(this.health/this.maxHealth)), 5, 10);
+    pop();
 }
 
 Zombie.prototype.die = function() {
