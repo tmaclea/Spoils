@@ -3,19 +3,17 @@ TO DO:
 
 player death animation
 
-Later on:
-    need to be able to build base
-    within the base, ability to upgrade:
-        shooting speed
-        walking speed
-        heath upgrades / healing
-        bullet damage
-        max base health
-        parts bag upgrade
-    within the base, ability to make:
-        armor?
-        bullets?
-
+ability to upgrade:
+    shooting speed
+    walking speed
+    heath upgrades / healing
+    bullet damage
+    max base health
+    parts bag upgrade
+ability to make:
+    armor?
+    bullets?
+build a base?
 
 Zombies:
     Death animation
@@ -31,6 +29,7 @@ Low priority:
 */
 
 var player;
+var store;
 var zombies = [];
 var bullets = [];
 var parts = [];
@@ -42,6 +41,8 @@ function setup() {
 
     //spawn player
     player = new Player();
+    //create store
+    store = new Store();
     //spawn zombies
     spawnZombies(NUM_ZOMBIES);
 }
@@ -124,6 +125,7 @@ function draw() {
     if(keyIsDown(65)) {player.move('left');} // a key
     if(keyIsDown(83)) {player.move('down');} // s key
     if(keyIsDown(68)) {player.move('right');} // d key
+    if(keyIsDown(SHIFT)) {store.open(player.pos);}
 }
 
 function mousePressed() {
@@ -136,6 +138,15 @@ function mousePressed() {
     if(playerDead) {
         restart();
     }
+}
+
+function keyReleased() {
+    if(keyCode === SHIFT) {
+        store.close();
+    }
+
+    //prevent any default brower behavior
+    return false;
 }
 
 function spawnZombies(num) {

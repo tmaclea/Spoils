@@ -59,11 +59,17 @@ Player.prototype.showHealth = function() {
     push();
         noStroke();
         //health bar
-        fill(255,80,80);
+        fill(255,80,80,180);
         rect(posX-width, posY-10, floor(width*(this.health/this.maxHealth)), 10);
         //parts bag
-        fill(255,255,80);
+        fill(255,255,80,180);
         rect(posX-width, posY-20, floor(width*(this.parts/this.maxParts)), 10);
+
+        if(this.parts == this.maxParts) {
+            fill(0);
+            textSize(12);
+            text("Bag full. Hold shift to open store.", this.pos.x-60, this.pos.y + 275);
+    }
     pop();
 }
 
