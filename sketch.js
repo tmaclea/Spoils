@@ -1,10 +1,6 @@
 /* 
 TO DO:
 
-Parts:
-    Need to come out of zombies on death
-    need to be picked up by player and counted
-
 Later on:
     need to be able to build base
     within the base, ability to upgrade:
@@ -20,7 +16,6 @@ Later on:
 
 Zombies:
     Death animation
-    better movement
     lunge?
 
     types:
@@ -83,7 +78,7 @@ function draw() {
     for(var i = 0; i < parts.length; i++) {
         parts[i].show();
         parts[i].update();
-        if(player.pickUp(parts[i])){
+        if(player.pickUp(parts[i]) || parts[i].done){
             parts.splice(i, 1);
         }
     }

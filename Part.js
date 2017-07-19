@@ -2,8 +2,12 @@ function Part(startX, startY) {
     this.pos = createVector(startX, startY);
     this.r = 5;
     this.vel = createVector(random(-7,7), random(-7,7));
-
     this.friction = .8;
+    this.timeAlive = 20000 + random(-1000,1000); //in milliseconds
+    this.done = false;
+
+    setTimeout(() => this.done = true, this.timeAlive);
+
 }
 
 Part.prototype.show = function() {
