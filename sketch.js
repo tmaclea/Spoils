@@ -1,7 +1,18 @@
 /* 
 TO DO:
 
-player death animation
+store needs to display player's parts and item costs
+
+make sure player can't buy over max for each item
+    (and if try, do not subtract parts)
+
+adjust items costs when something it bought
+
+improve item costs
+
+bugs:
+    make sure upgrades can't go above max
+    zombie health does not show on first shot for special zombies
 
 ability to upgrade:
     shooting speed
@@ -10,10 +21,7 @@ ability to upgrade:
     bullet damage
     max base health
     parts bag upgrade
-ability to make:
-    armor?
-    bullets?
-build a base?
+
 
 Zombies:
     Death animation
@@ -24,17 +32,26 @@ Zombies:
         different colors, health, speed, attack speed
         zombies get more difficult as more are killed
 
+other possibilities:
+    make shooting not perfectly accurate, and
+    add accuracy improvement as an upgrade
+    ability to make:
+        armor?
+        bullets?
+        build a base?
+
 Low priority:
     Improve the bullets offscreen function 
+    player death animation
 */
 
-var player;
-var store;
+var player, store;
 var zombies = [];
 var bullets = [];
 var parts = [];
 var playerDead = false;
 var NUM_ZOMBIES = 200;
+var storeOpen = false;
 
 function setup() {
     createCanvas(600,600);
@@ -56,8 +73,6 @@ function draw() {
 
     //create grid lines
     drawGrid(-width*2, -height*2, width*2, height*2);
-
-    player.show();
 
     //do stuff with zombies
     for (var i = zombies.length - 1; i >= 0; i--) {
@@ -109,6 +124,9 @@ function draw() {
         }
     }
 
+    //show player
+    player.show();
+
     //show health
     player.showHealth();
     if(!player.canShoot) { 
@@ -121,11 +139,11 @@ function draw() {
 
     // movement of player
     //weird stuff happens if this isn't last in draw
-    if(keyIsDown(87)) {player.move('up');} // w key
-    if(keyIsDown(65)) {player.move('left');} // a key
-    if(keyIsDown(83)) {player.move('down');} // s key
-    if(keyIsDown(68)) {player.move('right');} // d key
-    if(keyIsDown(SHIFT)) {store.open(player.pos);}
+    if(keyIsDown(87) || keyIsDown(UP_ARROW)) {player.move('up');}
+    if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {player.move('left');} 
+    if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
+    if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
+    if(keyIsDown(SHIFT)) {store.open(player); storeOpen = true;}
 }
 
 function mousePressed() {
@@ -134,19 +152,25 @@ function mousePressed() {
         //must start timer outside of the player.shoot function
         setTimeout(() => player.canShoot = true, player.firingSpeed);
     }
-
-    if(playerDead) {
-        restart();
-    }
 }
 
 function keyReleased() {
     if(keyCode === SHIFT) {
         store.close();
+        storeOpen = false;
     }
 
     //prevent any default brower behavior
     return false;
+}
+
+function keyPressed() {
+    if(storeOpen) {store.moveSelection(keyCode, player);}
+
+    //buy item
+    if(storeOpen && keyCode == 13) {store.buy(player);}
+
+    if(keyCode == 32 && playerDead) restart();
 }
 
 function spawnZombies(num) {
@@ -187,7 +211,7 @@ function gameOver() {
         textSize(48);
         text("Game Over", player.pos.x-100, player.pos.y-100);
         textSize(20);
-        text("Click to restart", player.pos.x-40, player.pos.y-75);
+        text("Press space to restart", player.pos.x-75, player.pos.y-75);
     pop();
     noLoop();
 }

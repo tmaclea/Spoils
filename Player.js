@@ -1,14 +1,15 @@
 function Player() {
     this.pos = createVector(width/2, height/2);
     this.r = 16; //radius
-    this.vel = 3;
+    this.vel = 1;
     this.maxHealth = 100;
     this.health = 100;
     this.firingSpeed = 2000; //in milliseconds
+    this.damage = 100;
     this.canShoot = true;
     this.killCount = 0;
     this.parts = 0;
-    this.maxParts = 20;
+    this.maxParts = 25;
     this.frameCount = 0;
     this.reloadText = ".";
 }
@@ -46,15 +47,16 @@ Player.prototype.move = function(dir) {
 Player.prototype.shoot = function(pos, shootX, shootY) {
     this.canShoot = false;
     this.frameCount = 0;
-    return new Bullet(pos, shootX, shootY);
+    return new Bullet(pos, shootX, shootY, this.damage);
 }
 
 Player.prototype.showHealth = function() {
     var posX = this.pos.x+(width/2);
     var posY = this.pos.y+(height/2);
 
-    //establish minimum health
+    //establish minimum and maximum health
     if(this.health < 0) {this.health = 0;}
+    if(this.health > this.maxHealth) {this.health = this.maxHealth;}
 
     push();
         noStroke();
@@ -104,10 +106,11 @@ Player.prototype.reload = function() {
 
 Player.prototype.startOver = function() {
     this.pos = createVector(width/2, height/2);
-    this.vel = 3;
+    this.vel = 1;
     this.maxHealth = 100;
     this.health = 100;
     this.firingSpeed = 2000; //in milliseconds
     this.killCount = 0;
     this.parts = 0;
+    this.damage = 100;
 }

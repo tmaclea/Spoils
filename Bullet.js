@@ -1,10 +1,10 @@
-function Bullet(playerPos, mX, mY) {
+function Bullet(playerPos, mX, mY, damage) {
     this.pos = createVector(playerPos.x, playerPos.y);
     // mouse position is on canvas, so math must be done to get position on game area
     this.mouse = createVector(mX+playerPos.x-(width/2), mY+playerPos.y-(height/2)); 
     this.vel = this.mouse.sub(this.pos);
     this.vel.setMag(20);
-    this.damage = 100;
+    this.damage = damage;
 }
 
 Bullet.prototype.fire = function() {
