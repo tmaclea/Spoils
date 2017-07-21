@@ -19,6 +19,7 @@ function Zombie(posX, posY, kills) {
         console.log("special zombie spawned");
         this.color = color(0, 0, 200);
         this.health = 500;
+        this.maxHealth = 500;
         this.vel = 1;
         this.strength = 75;
         this.parts = random(5,10);
@@ -31,6 +32,10 @@ Zombie.prototype.show = function() {
 }
 
 Zombie.prototype.move = function(playerX, playerY) {
+    //contrain zombie to edge of play area
+    this.pos.y = constrain(this.pos.y, -height*2+this.r, height*2-this.r);
+    this.pos.x = constrain(this.pos.x, -width*2+this.r, width*2-this.r);
+
     var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
     this.xoff += 0.01;
     this.yoff += 0.01;
@@ -72,11 +77,15 @@ Zombie.prototype.showHealth = function() {
     if(this.health < 0) {this.health = 0;}
 
     push();
+    if(this.health < this.maxHealth) {
         noFill();
         rect(posX, posY, healthBarLen, 5, 10);
         fill(255,80,80);
         rect(posX, posY, floor(healthBarLen*(this.health/this.maxHealth)), 5, 10);
+    }
     pop();
+
+
 }
 
 Zombie.prototype.die = function() {

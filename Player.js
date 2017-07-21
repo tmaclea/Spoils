@@ -4,12 +4,12 @@ function Player() {
     this.vel = 1;
     this.maxHealth = 100;
     this.health = 100;
-    this.firingSpeed = 2000; //in milliseconds
+    this.firingSpeed = 2100; //in milliseconds
     this.damage = 100;
     this.canShoot = true;
     this.killCount = 0;
-    this.parts = 10000;
-    this.maxParts = 10000;
+    this.parts = 0;
+    this.maxParts = 25;
     this.frameCount = 0;
     this.reloadText = ".";
 }

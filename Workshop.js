@@ -27,8 +27,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 200,
-        "minVal": 2000,
-        "maxVal": 1,
+        "minVal": 2100,
+        "maxVal": 70,
         "cost": 10
     },
     {

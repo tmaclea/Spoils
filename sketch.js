@@ -1,8 +1,6 @@
 /* 
 TO DO:
 
-workshop needs to display player's parts and item costs
-
 workshop needs to have some indication of the progress of each item bought
 e.g. Walking Speed level 1, level 2, max health: 200
 
@@ -20,11 +18,6 @@ ongoing:
     improve store aesthetics
 
 bugs:
-    make sure upgrades can't go above max
-    zombie health does not show on first shot for special zombies
-    zombies sometimes disappear from the screen when one is killed
-    constrain zombies to inside the play area
-    getUpgradeProgress for firing speed is wrong
 
 
 Zombies:
@@ -48,6 +41,9 @@ other possibilities:
         bullets?
         clips?
         build a base?
+
+    Other means of game progression besides upgrades
+        Levels!
 
 Low priority:
     Improve the bullets offscreen function 
@@ -86,15 +82,13 @@ function draw() {
     //do stuff with zombies
     for (var i = zombies.length - 1; i >= 0; i--) {
         zombies[i].show();
+        zombies[i].showHealth();
         zombies[i].move(player.pos.x, player.pos.y);
 
         if(zombies[i].isInRange(player)) {
             zombies[i].attack(player);
         }
 
-        if(zombies[i].health < zombies[i].maxHealth) {
-            zombies[i].showHealth();
-        }
 
         if(zombies[i].dead()){
             player.killCount++;
@@ -104,8 +98,7 @@ function draw() {
     }
     //make sure there are always 200 zombies
     //no need for recursive spawnZombies function
-    if(zombies.length < NUM_ZOMBIES)
-        spawnZombies(1);
+    if(zombies.length < NUM_ZOMBIES) { spawnZombies(1); }
 
     //do stuff with parts
     for(var i = 0; i < parts.length; i++) {
@@ -183,16 +176,14 @@ function keyPressed() {
 }
 
 function spawnZombies(num) {
-    var areaView = 316;  //300 pixels around the player in each direction + 16 radius of zombie  
+    var areaView = (height / 2) + player.r; //works as long as height = width
     for (i = 0; i < num; i++) {
         var randW = random(-width * 2, width * 2);
         var randH = random(-height * 2, height * 2);
         //make sure zombie doesn't spawn in the view of the player
         if(randW > player.pos.x - areaView && randW < player.pos.x + areaView &&
             randH > player.pos.y - areaView && randH < player.pos.y + areaView) {
-                zombies.splice(i, 1);
-                //this recursion causes an infinite loop
-                // spawnZombies(1);
+                //do nothing
         } else {
             zombies.push(new Zombie(randW, randH, player.killCount));
         }
