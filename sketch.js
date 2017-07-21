@@ -4,15 +4,6 @@ TO DO:
 workshop needs to have some indication of the progress of each item bought
 e.g. Walking Speed level 1, level 2, max health: 200
 
-make sure player can't buy over max for each item
-    (and if try, do not subtract parts)
-
-adjust items costs when something it bought
-
-when player buys health, it should scale with their max health
-
-price should stop displaying when the progress for an item is at 100%
-
 ongoing:
     improve item costs
     improve store aesthetics

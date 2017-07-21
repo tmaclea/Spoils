@@ -39,7 +39,7 @@ Workshop.prototype.upgrades =
         "posX": 50,
         "posY": 275,
         "minVal": 100,
-        "maxVal": 10000,
+        "maxVal": 1000,
         "cost": 10
     },
     {
@@ -50,7 +50,7 @@ Workshop.prototype.upgrades =
         "posX": 50,
         "posY": 350,
         "minVal": 25,
-        "maxVal": 10000,
+        "maxVal": 3200,
         "cost": 25
     },
     {
@@ -60,8 +60,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 425,
-        "minVal": 25,
-        "maxVal": 10000,
+        "minVal": 100,
+        "maxVal": 1000,
         "cost": 10
     },
     {
@@ -152,7 +152,7 @@ Workshop.prototype.getUpgradeProgress = function(item, player) {
     var progress = 0;
     switch(item.name) {
         case "vel":
-            progress = (player.vel - item.minVal) / item.maxVal;
+            progress = (player.vel - item.minVal) / item.maxVal; 
             break;
         case "maxHealth":
             progress = (player.maxHealth - item.minVal) / item.maxVal;
@@ -192,21 +192,27 @@ Workshop.prototype.buy = function(player) {
         switch(item.name) {
             case "vel":
                 player.vel += 0.1
+                item.cost = floor(item.cost * 1.5);
                 break;
             case "maxHealth":
                 player.maxHealth += 50;
+                item.cost = floor(item.cost * 1.8);
+                this.upgrades.item[5].cost = floor(this.upgrades.item[5].cost * 1.4); //item 5 = health
                 break;
             case "maxParts":
-                player.maxParts += 25;
+                player.maxParts *= 2;
+                item.cost = player.maxParts;
                 break;
             case "firingSpeed":
                 player.firingSpeed -= 100;
+                item.cost = floor(item.cost * 1.5);
                 break;
             case "damage":
                 player.damage += 25;
+                item.cost = floor(item.cost * 1.5);
                 break;
             case "health":
-                player.health += 10;
+                player.health += player.maxHealth * .25;
                 break;
             default:
                 break;
