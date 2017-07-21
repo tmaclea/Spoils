@@ -8,8 +8,8 @@ function Player() {
     this.damage = 100;
     this.canShoot = true;
     this.killCount = 0;
-    this.parts = 0;
-    this.maxParts = 25;
+    this.parts = 10000;
+    this.maxParts = 10000;
     this.frameCount = 0;
     this.reloadText = ".";
 }
@@ -70,7 +70,7 @@ Player.prototype.showHealth = function() {
         if(this.parts == this.maxParts) {
             fill(0);
             textSize(12);
-            text("Bag full. Hold shift to open store.", this.pos.x-60, this.pos.y + 275);
+            text("Bag full. Hold shift to open workshop.", this.pos.x-60, this.pos.y + 275);
     }
     pop();
 }
@@ -112,5 +112,6 @@ Player.prototype.startOver = function() {
     this.firingSpeed = 2000; //in milliseconds
     this.killCount = 0;
     this.parts = 0;
+    this.maxParts = 25;
     this.damage = 100;
 }

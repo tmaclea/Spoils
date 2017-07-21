@@ -1,26 +1,30 @@
 /* 
 TO DO:
 
-store needs to display player's parts and item costs
+workshop needs to display player's parts and item costs
+
+workshop needs to have some indication of the progress of each item bought
+e.g. Walking Speed level 1, level 2, max health: 200
 
 make sure player can't buy over max for each item
     (and if try, do not subtract parts)
 
 adjust items costs when something it bought
 
-improve item costs
+when player buys health, it should scale with their max health
+
+price should stop displaying when the progress for an item is at 100%
+
+ongoing:
+    improve item costs
+    improve store aesthetics
 
 bugs:
     make sure upgrades can't go above max
     zombie health does not show on first shot for special zombies
-
-ability to upgrade:
-    shooting speed
-    walking speed
-    heath upgrades / healing
-    bullet damage
-    max base health
-    parts bag upgrade
+    zombies sometimes disappear from the screen when one is killed
+    constrain zombies to inside the play area
+    getUpgradeProgress for firing speed is wrong
 
 
 Zombies:
@@ -35,9 +39,14 @@ Zombies:
 other possibilities:
     make shooting not perfectly accurate, and
     add accuracy improvement as an upgrade
+
+    add gun types that shoot differently
+        shotgun, machine gun, etc...
+
     ability to make:
         armor?
         bullets?
+        clips?
         build a base?
 
 Low priority:
@@ -45,21 +54,21 @@ Low priority:
     player death animation
 */
 
-var player, store;
+var player, workshop;
 var zombies = [];
 var bullets = [];
 var parts = [];
 var playerDead = false;
 var NUM_ZOMBIES = 200;
-var storeOpen = false;
+var workshopOpen = false;
 
 function setup() {
     createCanvas(600,600);
 
     //spawn player
     player = new Player();
-    //create store
-    store = new Store();
+    //create workshop
+    workshop = new Workshop();
     //spawn zombies
     spawnZombies(NUM_ZOMBIES);
 }
@@ -143,7 +152,7 @@ function draw() {
     if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {player.move('left');} 
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
-    if(keyIsDown(SHIFT)) {store.open(player); storeOpen = true;}
+    if(keyIsDown(SHIFT)) {workshop.open(player); workshopOpen = true;}
 }
 
 function mousePressed() {
@@ -156,8 +165,8 @@ function mousePressed() {
 
 function keyReleased() {
     if(keyCode === SHIFT) {
-        store.close();
-        storeOpen = false;
+        workshop.close();
+        workshopOpen = false;
     }
 
     //prevent any default brower behavior
@@ -165,10 +174,10 @@ function keyReleased() {
 }
 
 function keyPressed() {
-    if(storeOpen) {store.moveSelection(keyCode, player);}
+    if(workshopOpen) {workshop.moveSelection(keyCode, player);}
 
     //buy item
-    if(storeOpen && keyCode == 13) {store.buy(player);}
+    if(workshopOpen && keyCode == 13) {workshop.buy(player);}
 
     if(keyCode == 32 && playerDead) restart();
 }

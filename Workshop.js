@@ -1,65 +1,65 @@
-function Store() {
-    this.title = "This is the store"
+function Workshop() {
+    this.title = "This is the workshop"
     this.info = "Use arrow keys to make a selection and press enter to buy";
     this.barLength = 200;
     this.helpText = "";
     this.helpTime = 2000;
 }
 
-Store.prototype.upgrades = 
+Workshop.prototype.upgrades = 
 {    
     "item": [
     {
         "name": "vel",
-        "text": "Walking speed",
+        "text": "Upgrade exoskeleton",
         "selected": true,
         "hasProgress": true,
         "posX": 50,
-        "posY": 150,
+        "posY": 125,
         "minVal": 1,
         "maxVal": 5,
         "cost": 10
     },
     {
         "name": "firingSpeed",
-        "text": "Shooting speed",
+        "text": "Improve gun",
         "selected": false,
         "hasProgress": true,
         "posX": 50,
-        "posY": 225,
+        "posY": 200,
         "minVal": 2000,
         "maxVal": 1,
         "cost": 10
     },
     {
         "name": "maxHealth",
-        "text": "Maximum health",
+        "text": "Enhance Armor",
         "selected": false,
         "hasProgress": true,
         "posX": 50,
-        "posY": 300,
+        "posY": 275,
         "minVal": 100,
         "maxVal": 10000,
         "cost": 10
     },
     {
         "name": "maxParts",
-        "text": "Parts bag capacity",
+        "text": "Build a bigger bag",
         "selected": false,
         "hasProgress": true,
         "posX": 50,
-        "posY": 375,
+        "posY": 350,
         "minVal": 25,
         "maxVal": 10000,
         "cost": 25
     },
     {
         "name": "damage",
-        "text": "Bullet damage",
+        "text": "Modify bullets",
         "selected": false,
         "hasProgress": true,
         "posX": 50,
-        "posY": 450,
+        "posY": 425,
         "minVal": 25,
         "maxVal": 10000,
         "cost": 10
@@ -69,13 +69,13 @@ Store.prototype.upgrades =
         "text": "Heal",
         "selected": false,
         "posX": 50,
-        "posY": 525,
+        "posY": 500,
         "cost": 10
     }
     ]
 }
 
-Store.prototype.open = function(player) {
+Workshop.prototype.open = function(player) {
     noLoop();
     var barYoffset = 20;
     var progress = 0;
@@ -88,14 +88,18 @@ Store.prototype.open = function(player) {
         //Title, info, helptext
         fill(0);
         textSize(24);
-        text(this.title, 220, 50);
+        text(this.title, 200, 50);
         textSize(12);
         text(this.info, 150, 75);
         textSize(14);
         textStyle(BOLD);
         fill(255,100,100);
-        text(this.helpText, 220, 110);
+        text(this.helpText, 230, 95);
         textSize(18);
+        fill(255,255,0);
+        rect(440, 570, 170, 30, 10);
+        fill(0);
+        text("Bag: " + player.parts + " parts", 450,590);
         //selections
         for(var i = 0; i < this.upgrades.item.length; i++){
             var item = this.upgrades.item[i];
@@ -105,6 +109,11 @@ Store.prototype.open = function(player) {
                 fill(255);
             }
             text(item.text, item.posX, item.posY);
+            //only show cost if the item isnt fully upgraded
+            if(this.getUpgradeProgress(item, player) < 1) {
+                fill(0);
+                text("Cost: " + item.cost + " parts", item.posX+400, item.posY);
+            }
             //upgrade bars
             fill(255);
             rect(item.posX, item.posY + barYoffset, this.barLength, 10, 5);
@@ -114,7 +123,7 @@ Store.prototype.open = function(player) {
     pop();
 }
 
-Store.prototype.moveSelection = function(key, player) {
+Workshop.prototype.moveSelection = function(key, player) {
     var selectedIndex;
     var numItems = 0;
     this.helpText = "";
@@ -139,7 +148,7 @@ Store.prototype.moveSelection = function(key, player) {
     this.open(player);
 }
 
-Store.prototype.getUpgradeProgress = function(item, player) {
+Workshop.prototype.getUpgradeProgress = function(item, player) {
     var progress = 0;
     switch(item.name) {
         case "vel":
@@ -167,15 +176,16 @@ Store.prototype.getUpgradeProgress = function(item, player) {
     return progress;
 }
 
-Store.prototype.buy = function(player) {
+Workshop.prototype.buy = function(player) {
     var item;
     for(var i = 0; i < this.upgrades.item.length; i++) {
         if(this.upgrades.item[i].selected) {
             item = this.upgrades.item[i];
         }
     }
-
-    if(player.parts < item.cost) {
+    if(this.getUpgradeProgress(item, player) >= 1) {
+        this.helpText = "Item fully upgraded.";
+    } else if(player.parts < item.cost) {
         this.helpText = "You cannot afford this.";
     } else {
         player.parts -= item.cost;
@@ -208,7 +218,7 @@ Store.prototype.buy = function(player) {
     this.open(player);
 }
 
-Store.prototype.close = function() {
+Workshop.prototype.close = function() {
     this.helpText = "";
     //reset selection to first item
     for(var i = 0; i < this.upgrades.item.length; i++) {
