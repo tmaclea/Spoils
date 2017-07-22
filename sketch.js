@@ -4,21 +4,19 @@ TO DO:
 workshop needs to have some indication of the progress of each item bought
 e.g. Walking Speed level 1, level 2, max health: 200
 
+make zombies not able to overlap one another
+
+different kinds of parts that are worth more
+
+press shift once to open store, press again to close
+
 ongoing:
     improve item costs
     improve store aesthetics
+    adjust amount of parts that zombies drop
+    adjust chances of different zombies spawning
 
 bugs:
-
-
-Zombies:
-    Death animation
-    lunge?
-
-    types:
-        A random (but zipfy) variation of zombie types
-        different colors, health, speed, attack speed
-        zombies get more difficult as more are killed
 
 other possibilities:
     make shooting not perfectly accurate, and
@@ -28,17 +26,26 @@ other possibilities:
         shotgun, machine gun, etc...
 
     ability to make:
-        armor?
         bullets?
         clips?
         build a base?
 
     Other means of game progression besides upgrades
-        Levels!
+        Levels:
+            zombie bosses
+                could have a chance of spawning after a certain number of kills
+                and play a role in the chances of different zombie types spawning
+            Waves?
+    zombie lunge?
+
+    have friction of parts reduce depending on the amound of damage done to a zombie
+        e.g. if zombie has 100 health and player does 1000 damage, friction is less
+        than if player did 100 damage
 
 Low priority:
     Improve the bullets offscreen function 
     player death animation
+    zombie death animation
 */
 
 var player, workshop, ztracker;

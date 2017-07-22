@@ -13,10 +13,7 @@ function Zombie(posX, posY, kills, ztracker) {
     this.yoff = random(-10000,10000); //y offset for perlin noise
     this.wobble = random(1000); //magnitude of the wobble
     this.playerKills = kills;
-
-    //to keep track of which zombies have spawned
-    this.type1 = 0
-
+    
     this.getRandomType(ztracker);
 }
 

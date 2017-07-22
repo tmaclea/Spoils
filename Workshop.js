@@ -16,8 +16,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 125,
-        "minVal": 1,
-        "maxVal": 5,
+        "upgrade": 0,
+        "maxUpgrade": 40,
         "cost": 10
     },
     {
@@ -27,8 +27,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 200,
-        "minVal": 2100,
-        "maxVal": 70,
+        "upgrade": 0,
+        "maxUpgrade": 29,
         "cost": 10
     },
     {
@@ -38,8 +38,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 275,
-        "minVal": 100,
-        "maxVal": 1000,
+        "upgrade": 0,
+        "maxUpgrade": 10,
         "cost": 10
     },
     {
@@ -49,8 +49,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 350,
-        "minVal": 25,
-        "maxVal": 3200,
+        "upgrade": 0,
+        "maxUpgrade": 8,
         "cost": 25
     },
     {
@@ -60,8 +60,8 @@ Workshop.prototype.upgrades =
         "hasProgress": true,
         "posX": 50,
         "posY": 425,
-        "minVal": 100,
-        "maxVal": 1000,
+        "upgrade": 0,
+        "maxUpgrade": 26,
         "cost": 10
     },
     {
@@ -151,25 +151,11 @@ Workshop.prototype.moveSelection = function(key, player) {
 Workshop.prototype.getUpgradeProgress = function(item, player) {
     var progress = 0;
     switch(item.name) {
-        case "vel":
-            progress = (player.vel - item.minVal) / item.maxVal; 
-            break;
-        case "maxHealth":
-            progress = (player.maxHealth - item.minVal) / item.maxVal;
-            break;
-        case "maxParts":
-            progress = (player.maxParts - item.minVal) / item.maxVal;
-            break;
-        case "firingSpeed":
-            progress = (item.minVal - player.firingSpeed) / (item.minVal - item.maxVal);
-            break;
-        case "damage":
-            progress = (player.damage - item.minVal) / item.maxVal;
-            break;
         case "health":
             progress = (player.health / player.maxHealth);
             break;
         default:
+            progress = item.upgrade / item.maxUpgrade;
             break;
     }
 
@@ -183,6 +169,7 @@ Workshop.prototype.buy = function(player) {
             item = this.upgrades.item[i];
         }
     }
+    item.upgrade++;
     if(this.getUpgradeProgress(item, player) >= 1) {
         this.helpText = "Item fully upgraded.";
     } else if(player.parts < item.cost) {
@@ -196,7 +183,9 @@ Workshop.prototype.buy = function(player) {
                 item.cost = floor(item.cost * 1.5);
                 break;
             case "maxHealth":
-                player.maxHealth += 50;
+                var hp = player.maxHealth;
+                player.maxHealth = floor(player.maxHealth*1.4);
+                player.health += player.maxHealth - hp;
                 item.cost = floor(item.cost * 1.8);
                 this.upgrades.item[5].cost = floor(this.upgrades.item[5].cost * 1.4); //item 5 = health
                 break;
@@ -209,7 +198,7 @@ Workshop.prototype.buy = function(player) {
                 item.cost = floor(item.cost * 1.5);
                 break;
             case "damage":
-                player.damage += 25;
+                player.damage = floor(player.damage * 1.2);
                 item.cost = floor(item.cost * 1.5);
                 break;
             case "health":
