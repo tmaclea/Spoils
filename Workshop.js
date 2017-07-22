@@ -189,6 +189,7 @@ Workshop.prototype.buy = function(player) {
         this.helpText = "You cannot afford this.";
     } else {
         player.parts -= item.cost;
+        player.numUpgrades++;
         switch(item.name) {
             case "vel":
                 player.vel += 0.1
@@ -234,4 +235,13 @@ Workshop.prototype.close = function() {
     }
     this.upgrades.item[0].selected = true;
     loop();
+}
+
+Workshop.prototype.reset = function() {
+    this.upgrades.item[0].cost = 10;
+    this.upgrades.item[1].cost = 10;
+    this.upgrades.item[2].cost = 10;
+    this.upgrades.item[3].cost = 25;
+    this.upgrades.item[4].cost = 10;
+    this.upgrades.item[5].cost = 10;
 }

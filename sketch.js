@@ -41,12 +41,12 @@ Low priority:
     player death animation
 */
 
-var player, workshop;
+var player, workshop, ztracker;
 var zombies = [];
 var bullets = [];
 var parts = [];
 var playerDead = false;
-var NUM_ZOMBIES = 200;
+var NUM_ZOMBIES = 100;
 var workshopOpen = false;
 
 function setup() {
@@ -58,6 +58,8 @@ function setup() {
     workshop = new Workshop();
     //spawn zombies
     spawnZombies(NUM_ZOMBIES);
+    //zombie tracker
+    ztracker = new Ztracker();
 }
 
 function draw() {
@@ -69,6 +71,15 @@ function draw() {
 
     //create grid lines
     drawGrid(-width*2, -height*2, width*2, height*2);
+
+    //do stuff with parts
+    for(var i = 0; i < parts.length; i++) {
+        parts[i].show();
+        parts[i].update();
+        if(player.pickUp(parts[i]) || parts[i].done){
+            parts.splice(i, 1);
+        }
+    }
 
     //do stuff with zombies
     for (var i = zombies.length - 1; i >= 0; i--) {
@@ -91,14 +102,7 @@ function draw() {
     //no need for recursive spawnZombies function
     if(zombies.length < NUM_ZOMBIES) { spawnZombies(1); }
 
-    //do stuff with parts
-    for(var i = 0; i < parts.length; i++) {
-        parts[i].show();
-        parts[i].update();
-        if(player.pickUp(parts[i]) || parts[i].done){
-            parts.splice(i, 1);
-        }
-    }
+
 
     //do stuff with bullets
     for (var i = 0; i < bullets.length; i++) {
@@ -176,7 +180,7 @@ function spawnZombies(num) {
             randH > player.pos.y - areaView && randH < player.pos.y + areaView) {
                 //do nothing
         } else {
-            zombies.push(new Zombie(randW, randH, player.killCount));
+            zombies.push(new Zombie(randW, randH, player.killCount, ztracker));
         }
     }
 }
@@ -210,6 +214,7 @@ function gameOver() {
 function restart() {
     playerDead = false;
     player.startOver();
+    workshop.reset();
     
     //kill and respawn all zombies
     for(var i = zombies.length; i >= 0; i--) {
