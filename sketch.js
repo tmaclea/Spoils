@@ -42,6 +42,8 @@ other possibilities:
         e.g. if zombie has 100 health and player does 1000 damage, friction is less
         than if player did 100 damage
 
+    zombies drop powerups
+
 Low priority:
     Improve the bullets offscreen function 
     player death animation
@@ -55,6 +57,7 @@ var parts = [];
 var playerDead = false;
 var NUM_ZOMBIES = 100;
 var workshopOpen = false;
+var paused = false;
 
 function setup() {
     createCanvas(600,600);
@@ -136,6 +139,12 @@ function draw() {
     if(!player.canShoot) { 
         player.reload(); 
     }
+    //show paused text if game is paused
+    if(paused) {
+        fill(0);
+        textSize(48);
+        text("Paused", player.pos.x-80, player.pos.y-100);
+    }
     //game over when health is 0
     if(player.health <= 0) {
         gameOver();
@@ -151,6 +160,10 @@ function draw() {
 }
 
 function mousePressed() {
+    if(workshopOpen || paused) {
+        return;
+    }
+
     if(player.canShoot){
         bullets.push(player.shoot(player.pos, mouseX, mouseY));
         //must start timer outside of the player.shoot function
@@ -164,17 +177,24 @@ function keyReleased() {
         workshopOpen = false;
     }
 
-    //prevent any default brower behavior
-    return false;
+    return false; //prevent any default browser behavior
 }
 
 function keyPressed() {
+
+    //pause
+    if(keyCode == ESCAPE && !workshopOpen) {
+        pause();
+    }
+
     if(workshopOpen) {workshop.moveSelection(keyCode, player);}
 
     //buy item
     if(workshopOpen && keyCode == 13) {workshop.buy(player);}
 
     if(keyCode == 32 && playerDead) restart();
+
+    return false; //prevent default browser behavior
 }
 
 function spawnZombies(num) {
@@ -216,6 +236,16 @@ function gameOver() {
         text("Press space to restart", player.pos.x-75, player.pos.y-75);
     pop();
     noLoop();
+}
+
+function pause() {
+    if(!paused) {
+        noLoop();
+        paused = true;
+    } else {
+        loop();
+        paused = false;
+    }
 }
 
 function restart() {

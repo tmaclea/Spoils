@@ -138,8 +138,7 @@ Workshop.prototype.moveSelection = function(key, player) {
     if(key === UP_ARROW || key === 87) {
         selectedIndex--;
         if(selectedIndex < 0) {selectedIndex = numItems - 1;}
-    }
-    if(key === DOWN_ARROW || key === 83) {
+    } else if(key === DOWN_ARROW || key === 83) {
         selectedIndex++;
         if(selectedIndex > numItems - 1) {selectedIndex = 0;}
     }
