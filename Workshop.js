@@ -232,4 +232,10 @@ Workshop.prototype.reset = function() {
     this.upgrades.item[3].cost = 25;
     this.upgrades.item[4].cost = 10;
     this.upgrades.item[5].cost = 10;
+
+    this.upgrades.item[0].upgrade = 0;
+    this.upgrades.item[1].upgrade = 0;
+    this.upgrades.item[2].upgrade = 0;
+    this.upgrades.item[3].upgrade = 0;
+    this.upgrades.item[4].upgrade = 0;
 }
