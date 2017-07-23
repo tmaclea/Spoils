@@ -44,10 +44,10 @@ Zombie.prototype.getShot = function(bullet) {
     this.health -= bullet.damage;
 }
 
-Zombie.prototype.isInRange = function(player) {
-    //check distance to player
-    var d = dist(this.pos.x, this.pos.y, player.pos.x, player.pos.y);
-    return d < player.r+this.r;
+Zombie.prototype.isInRange = function(something) {
+    //check distance to the thing
+    var d = dist(this.pos.x, this.pos.y, something.pos.x, something.pos.y);
+    return d < something.r+this.r;
 }
 
 Zombie.prototype.attack = function(player) {
@@ -75,8 +75,6 @@ Zombie.prototype.showHealth = function() {
         rect(posX, posY, floor(healthBarLen*(this.health/this.maxHealth)), 5, 10);
     }
     pop();
-
-
 }
 
 Zombie.prototype.die = function() {
@@ -159,4 +157,11 @@ Zombie.prototype.getRandomType = function(ztracker) {
             //keep default values
             return;
     }   
+}
+
+Zombie.prototype.noOverlap = function(otherZombie) {
+    var zomb = createVector(otherZombie.pos.x, otherZombie.pos.y);
+    zomb.sub(this.pos);
+    zomb.setMag(this.vel);
+    this.pos.sub(zomb);
 }

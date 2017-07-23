@@ -48,12 +48,16 @@ function draw() {
         if(zombies[i].isInRange(player)) {
             zombies[i].attack(player);
         }
-
-
         if(zombies[i].dead()){
             player.killCount++;
             parts = parts.concat(zombies[i].die());
             zombies.splice(i, 1);
+        }
+        //reduce zombie overlap
+        for(var j = zombies.length - 1; j >= 0; j--) {
+            if(zombies[i].isInRange(zombies[j])) {
+                zombies[i].noOverlap(zombies[j]);
+            }
         }
     }
     //make sure there are always 200 zombies
