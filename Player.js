@@ -47,7 +47,7 @@ Player.prototype.move = function(dir) {
 Player.prototype.shoot = function(pos, shootX, shootY) {
     this.canShoot = false;
     this.frameCount = 0;
-    return new Bullet(pos, shootX, shootY, this.damage);
+    return new Bullet(pos, shootX, shootY);
 }
 
 Player.prototype.showHealth = function() {
