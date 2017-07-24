@@ -80,6 +80,7 @@ Player.prototype.pickUp = function(part) {
     var get = d < this.r + part.r*2 && this.parts < this.maxParts;
     if(get) {
         this.parts += part.value;
+        if(this.parts > this.maxParts) {this.parts = this.maxParts;}
     }
     return get;
 }

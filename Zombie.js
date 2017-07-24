@@ -1,7 +1,7 @@
 function Zombie(posX, posY, kills, ztracker) {
     this.pos = createVector(posX, posY);
     this.r = 16;
-    this.vel = .05;
+    this.vel = .1;
     this.maxVel = .05;
     this.health = 200;
     this.maxHealth = 200;
