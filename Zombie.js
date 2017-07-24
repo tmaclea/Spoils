@@ -36,6 +36,80 @@ Zombie.prototype.move = function(playerX, playerY) {
     this.pos.add(player);
 }
 
+Zombie.prototype.getRandomType = function(ztracker) {
+    var chance = random();
+    switch(true) {
+        case (chance < (this.playerKills / 12000) && ztracker.type5 > 5):
+            console.log("Type 6 spawned");
+            this.color = color(0, 0, 200);
+            this.health = 10000;
+            this.maxHealth = 10000;
+            this.vel = 2;
+            this.strength = 100;
+            this.attackSpeed = 250;
+            this.parts = random(35,60);
+            break;
+        case (chance < (this.playerKills / 10000) && ztracker.type4 > 5):
+            console.log("Type 5 spawned");
+            ztracker.type5++;
+            this.color = color(130, 200, 200);
+            this.health = 7500;
+            this.maxHealth = 7500;
+            this.vel = 1.5;
+            this.strength = 75;
+            this.attackSpeed = 500;
+            this.parts = random(23,34);
+            break;
+        case (chance < (this.playerKills / 7500) && ztracker.type3 > 5):
+            console.log("Type 4 spawned");
+            ztracker.type4++;
+            this.color = color(255, 130, 200);
+            this.health = 5000;
+            this.maxHealth = 5000;
+            this.vel = 1.25;
+            this.strength = 75;
+            this.attackSpeed = 750;
+            this.parts = random(15,23);
+            break;
+        case (chance < (this.playerKills / 6000) && ztracker.type2 > 5):
+            console.log("Type 3 spawned");
+            ztracker.type3++;
+            this.color = color(130, 0, 130);
+            this.health = 3000;
+            this.maxHealth = 3000;
+            this.vel = 1;
+            this.strength = 75;
+            this.attackSpeed = 1000;
+            this.parts = random(12,17);
+            break;
+        case (chance < (this.playerKills / 3000) && ztracker.type1 > 5):
+            console.log("Type 2 spawned");
+            ztracker.type2++;
+            this.color = color(200, 200, 0);
+            this.health = 1000;
+            this.maxHealth = 1000;
+            this.vel = .5;
+            this.strength = 50;
+            this.attackSpeed = 1500;
+            this.parts = random(7,13);
+            break;
+        case chance < (this.playerKills / 500):
+            console.log("Type 1 spawned");
+            ztracker.type1++;
+            this.color = color(160, 160, 0);
+            this.health = 500;
+            this.maxHealth = 500;
+            this.vel = .3;
+            this.strength = 50;
+            this.attackSpeed = 1900;
+            this.parts = random(5,10);
+            break;
+        default:
+            //keep default values
+            return;
+    }   
+}
+
 Zombie.prototype.dead = function() {
     return this.health <= 0;
 }
@@ -55,7 +129,6 @@ Zombie.prototype.attack = function(player) {
         player.health -= this.strength;
         this.canAttack = false;
         setTimeout(() => this.canAttack = true, this.attackSpeed);
-
     }
 }
 
@@ -79,84 +152,18 @@ Zombie.prototype.showHealth = function() {
 
 Zombie.prototype.die = function() {
     var parts = [];
+    var blueChance = .33;
     for(var i = 0; i < this.parts; i++) {
-        parts.push(new Part(this.pos.x, this.pos.y));
+        if(this.parts - i > 5 && random() < blueChance) {
+            i += 5;
+            part = new Part(this.pos.x, this.pos.y);
+            part.setValue(5, color(0,0,255));
+            parts.push(part);
+        } else {
+            parts.push(new Part(this.pos.x, this.pos.y));
+        }
     }
     return parts;
-}
-
-Zombie.prototype.getRandomType = function(ztracker) {
-    var chance = random();
-    switch(true) {
-        case (chance < (this.playerKills / 12000) && ztracker.type5 > 5):
-            console.log("Type 6 spawned");
-            this.color = color(0, 0, 200);
-            this.health = 10000;
-            this.maxHealth = 10000;
-            this.vel = 2;
-            this.strength = 100;
-            this.attackSpeed = 250;
-            this.parts = random(30,60);
-            break;
-        case (chance < (this.playerKills / 10000) && ztracker.type4 > 5):
-            console.log("Type 5 spawned");
-            ztracker.type5++;
-            this.color = color(130, 200, 200);
-            this.health = 7500;
-            this.maxHealth = 7500;
-            this.vel = 1.5;
-            this.strength = 75;
-            this.attackSpeed = 500;
-            this.parts = random(20,30);
-            break;
-        case (chance < (this.playerKills / 7500) && ztracker.type3 > 5):
-            console.log("Type 4 spawned");
-            ztracker.type4++;
-            this.color = color(255, 130, 200);
-            this.health = 5000;
-            this.maxHealth = 5000;
-            this.vel = 1.25;
-            this.strength = 75;
-            this.attackSpeed = 750;
-            this.parts = random(15,20);
-            break;
-        case (chance < (this.playerKills / 6000) && ztracker.type2 > 5):
-            console.log("Type 3 spawned");
-            ztracker.type3++;
-            this.color = color(130, 0, 130);
-            this.health = 3000;
-            this.maxHealth = 3000;
-            this.vel = 1;
-            this.strength = 75;
-            this.attackSpeed = 1000;
-            this.parts = random(10,15);
-            break;
-        case (chance < (this.playerKills / 3000) && ztracker.type1 > 5):
-            console.log("Type 2 spawned");
-            ztracker.type2++;
-            this.color = color(200, 200, 0);
-            this.health = 1000;
-            this.maxHealth = 1000;
-            this.vel = .5;
-            this.strength = 50;
-            this.attackSpeed = 1500;
-            this.parts = random(6,12);
-            break;
-        case chance < (this.playerKills / 500):
-            console.log("Type 1 spawned");
-            ztracker.type1++;
-            this.color = color(160, 160, 0);
-            this.health = 500;
-            this.maxHealth = 500;
-            this.vel = .3;
-            this.strength = 50;
-            this.attackSpeed = 1900;
-            this.parts = random(4,8);
-            break;
-        default:
-            //keep default values
-            return;
-    }   
 }
 
 Zombie.prototype.noOverlap = function(otherZombie) {

@@ -79,7 +79,7 @@ Player.prototype.pickUp = function(part) {
     var d = dist(this.pos.x, this.pos.y, part.pos.x, part.pos.y);
     var get = d < this.r + part.r*2 && this.parts < this.maxParts;
     if(get) {
-        this.parts++;
+        this.parts += part.value;
     }
     return get;
 }
