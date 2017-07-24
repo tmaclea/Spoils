@@ -1,5 +1,5 @@
 function Workshop() {
-    this.title = "This is the workshop"
+    this.title = "Workshop"
     this.info = "Use arrow keys to make a selection and press enter to buy";
     this.barLength = 200;
     this.helpText = "";
@@ -14,8 +14,8 @@ Workshop.prototype.upgrades =
         "text": "Upgrade exoskeleton",
         "selected": true,
         "hasProgress": true,
-        "posX": 50,
-        "posY": 125,
+        "posX": 130,
+        "posY": 150,
         "upgrade": 0,
         "maxUpgrade": 40,
         "cost": 10
@@ -25,8 +25,8 @@ Workshop.prototype.upgrades =
         "text": "Improve gun",
         "selected": false,
         "hasProgress": true,
-        "posX": 50,
-        "posY": 200,
+        "posX": 130,
+        "posY": 225,
         "upgrade": 0,
         "maxUpgrade": 29,
         "cost": 10
@@ -36,8 +36,8 @@ Workshop.prototype.upgrades =
         "text": "Enhance Armor",
         "selected": false,
         "hasProgress": true,
-        "posX": 50,
-        "posY": 275,
+        "posX": 130,
+        "posY": 300,
         "upgrade": 0,
         "maxUpgrade": 10,
         "cost": 10
@@ -47,8 +47,8 @@ Workshop.prototype.upgrades =
         "text": "Build a bigger bag",
         "selected": false,
         "hasProgress": true,
-        "posX": 50,
-        "posY": 350,
+        "posX": 130,
+        "posY": 375,
         "upgrade": 0,
         "maxUpgrade": 8,
         "cost": 25
@@ -58,18 +58,18 @@ Workshop.prototype.upgrades =
         "text": "Modify bullets",
         "selected": false,
         "hasProgress": true,
-        "posX": 50,
-        "posY": 425,
+        "posX": 130,
+        "posY": 450,
         "upgrade": 0,
         "maxUpgrade": 26,
         "cost": 10
     },
     {
         "name": "health",
-        "text": "Heal",
+        "text": "Heal 25%",
         "selected": false,
-        "posX": 50,
-        "posY": 500,
+        "posX": 130,
+        "posY": 525,
         "cost": 10
     }
     ]
@@ -77,7 +77,6 @@ Workshop.prototype.upgrades =
 
 Workshop.prototype.open = function(player) {
     noLoop();
-    var barYoffset = 20;
     var progress = 0;
     push();
         translate(player.pos.x-width/2, player.pos.y-height/2);
@@ -85,22 +84,29 @@ Workshop.prototype.open = function(player) {
         fill(165,42,42);
         noStroke();
         rect(0,0,width,height);
-        //Title, info, helptext
         fill(0);
+        //Title
         textSize(24);
-        text(this.title, 200, 50);
+        text(this.title, 250, 50);
+        //Info
         textSize(12);
         text(this.info, 150, 75);
-        textSize(14);
+        //helpText
+        textSize(18);
         textStyle(BOLD);
         fill(255,100,100);
-        text(this.helpText, 230, 95);
-        textSize(18);
+        text(this.helpText, 38, 110);
+        //labels
+        fill(0);
+        text("Current", 330, 110);
+        text("Upgrade Cost", 445, 110);
+        //Bag display
         fill(255,255,0);
         rect(440, 570, 170, 30, 10);
         fill(0);
         text("Bag: " + player.parts + " parts", 450,590);
         //selections
+        textAlign(CENTER);
         for(var i = 0; i < this.upgrades.item.length; i++){
             var item = this.upgrades.item[i];
             if(item.selected) {
@@ -110,15 +116,17 @@ Workshop.prototype.open = function(player) {
             }
             text(item.text, item.posX, item.posY);
             //only show cost if the item isnt fully upgraded
+            fill(0);
             if(this.getUpgradeProgress(item, player) < 1) {
-                fill(0);
-                text("Cost: " + item.cost + " parts", item.posX+400, item.posY);
+                text(item.cost + "p", item.posX+380, item.posY);
             }
+            text(this.getUpgradeValue(item, player), item.posX+235, item.posY);
+
             //upgrade bars
             fill(255);
-            rect(item.posX, item.posY + barYoffset, this.barLength, 10, 5);
+            rect(item.posX-100, item.posY+10, this.barLength, 10, 5);
             fill(138,43,226);
-            rect(item.posX, item.posY + barYoffset, floor(this.barLength*(this.getUpgradeProgress(item, player))), 10, 5);
+            rect(item.posX-100, item.posY+10, floor(this.barLength*(this.getUpgradeProgress(item, player))), 10, 5);
         }
     pop();
 }
@@ -211,6 +219,34 @@ Workshop.prototype.buy = function(player) {
 
 
     this.open(player);
+}
+
+Workshop.prototype.getUpgradeValue = function(item, player) {
+    var value = "";
+    switch(item.name) {
+        case "vel": 
+            value = "Agility " + player.vel;
+            break;
+        case "firingSpeed":
+            value = "Firing speed " + item.upgrade;
+            break;
+        case "maxHealth":
+            value = "Max health: " + player.maxHealth;
+            break;
+        case "maxParts":
+            value = "Capacity: " + player.maxParts;
+            break;
+        case "damage":
+            value = "Damage: " + player.damage;
+            break;
+        case "health":
+            value = "Health: " + player.health;
+            break;
+        default:
+            console.error("Something went wrong in getUpgradeValue function");
+            break;
+    }
+        return value;
 }
 
 Workshop.prototype.close = function() {
