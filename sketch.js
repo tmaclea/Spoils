@@ -74,7 +74,7 @@ function draw() {
         bullets[i].fire();
         for (var j = 0; j < zombies.length; j++) {
             if(bullets[i].hits(zombies[j])){
-                zombies[j].getShot(bullets[i]);
+                zombies[j].getShot(player);
                 bullets.splice(i,1);
                 break;
             }
@@ -140,7 +140,7 @@ function keyPressed() {
     if(keyCode == ESCAPE && !workshopOpen) {
         pause();
     }
-
+    //change selection
     if(workshopOpen) {workshop.moveSelection(keyCode, player);}
 
     //buy item
