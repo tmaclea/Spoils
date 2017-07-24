@@ -26,10 +26,7 @@ Bullet.prototype.hits = function(zombie) {
     return d < zombie.r;
 }
 
-//improve later
 Bullet.prototype.offscreen = function() {
-    var off = false;
-    this.pos.x > 7500 || this.pos.x < -7500 ? off = true : off = false;
-    this.pos.y > 7500 || this.pos.y < -7500 ? off = true : off = false;
-    return off;
+    return this.pos.x > width*2 || this.pos.x < -width*2 || 
+            this.pos.y > height*2 || this.pos.y < -height*2;
 }
