@@ -48,7 +48,13 @@ function draw() {
         if(zombies[i].isInRange(player)) {
             zombies[i].attack(player);
         }
-
+        
+        //reduce zombie overlap
+        for(var j = zombies.length - 1; j >= 0; j--) {
+            if(zombies[i].isInRange(zombies[j])) {
+                zombies[i].noOverlap(zombies[j]);
+            }
+        }
 
         if(zombies[i].dead()){
             player.killCount++;
