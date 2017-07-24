@@ -168,12 +168,12 @@ Workshop.prototype.buy = function(player) {
             item = this.upgrades.item[i];
         }
     }
-    item.upgrade++;
     if(this.getUpgradeProgress(item, player) >= 1) {
         this.helpText = "Item fully upgraded.";
     } else if(player.parts < item.cost) {
         this.helpText = "You cannot afford this.";
     } else {
+        item.upgrade++;
         player.parts -= item.cost;
         player.numUpgrades++;
         switch(item.name) {
