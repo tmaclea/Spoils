@@ -225,7 +225,7 @@ Workshop.prototype.getUpgradeValue = function(item, player) {
     var value = "";
     switch(item.name) {
         case "vel": 
-            value = "Agility " + player.vel;
+            value = "Agility " + player.vel.toFixed(1);
             break;
         case "firingSpeed":
             value = "Firing speed " + item.upgrade;
