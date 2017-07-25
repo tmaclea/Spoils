@@ -77,7 +77,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.maxVel = 2.5
             this.strength = 100;
             this.attackSpeed = 250;
-            this.parts = random(35,60);
+            this.parts = random(100,200);
             break;
         case (chance < (this.playerKills / 10000) && ztracker.type4 > 5):
             console.log("Type 5 spawned");
@@ -89,7 +89,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.maxVel = 1.5;
             this.strength = 75;
             this.attackSpeed = 500;
-            this.parts = random(23,34);
+            this.parts = random(75,150);
             break;
         case (chance < (this.playerKills / 7500) && ztracker.type3 > 5):
             console.log("Type 4 spawned");
@@ -101,7 +101,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.maxVel = 1.25;
             this.strength = 75;
             this.attackSpeed = 750;
-            this.parts = random(15,23);
+            this.parts = random(50,100);
             break;
         case (chance < (this.playerKills / 6000) && ztracker.type2 > 5):
             console.log("Type 3 spawned");
@@ -113,7 +113,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.maxVel = 1;
             this.strength = 75;
             this.attackSpeed = 1000;
-            this.parts = random(12,17);
+            this.parts = random(30,60);
             break;
         case (chance < (this.playerKills / 3000) && ztracker.type1 > 5):
             console.log("Type 2 spawned");
@@ -125,7 +125,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.maxVel = .5;
             this.strength = 50;
             this.attackSpeed = 1500;
-            this.parts = random(7,13);
+            this.parts = random(10,20);
             break;
         case chance < (this.playerKills / 500):
             console.log("Type 1 spawned");
@@ -169,12 +169,13 @@ Zombie.prototype.showHealth = function() {
 
 Zombie.prototype.die = function() {
     var parts = [];
+    var spPartsValue = 10;
     var blueChance = .33;
     for(var i = 0; i < this.parts; i++) {
-        if(this.parts - i > 5 && random() < blueChance) {
-            i += 5;
+        if(this.parts - i > spPartsValue && random() < blueChance) {
+            i += spPartsValue;
             part = new Part(this.pos.x, this.pos.y);
-            part.setValue(5, color(0,0,255));
+            part.setValue(spPartsValue, color(0,0,255));
             parts.push(part);
         } else {
             parts.push(new Part(this.pos.x, this.pos.y));

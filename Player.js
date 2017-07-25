@@ -77,7 +77,7 @@ Player.prototype.showHealth = function() {
 
 Player.prototype.pickUp = function(part) {
     var d = dist(this.pos.x, this.pos.y, part.pos.x, part.pos.y);
-    var get = d < this.r + part.r*2 && this.parts < this.maxParts;
+    var get = d < this.r + part.r*2 && this.parts < this.maxParts && part.value <= this.maxParts - this.parts;
     if(get) {
         this.parts += part.value;
         if(this.parts > this.maxParts) {this.parts = this.maxParts;}
