@@ -209,7 +209,8 @@ Workshop.prototype.buy = function(player) {
                 item.cost = floor(item.cost * 1.5);
                 break;
             case "health":
-                player.health += player.maxHealth * .25;
+                player.health += ceil(player.maxHealth * .25);
+                if(player.health > player.maxHealth) { player.health = player.maxHealth; }
                 break;
             default:
                 break;

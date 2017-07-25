@@ -127,6 +127,8 @@ function mousePressed() {
 
 function keyReleased() {
     if(keyCode === SHIFT) {
+        player.canShoot = false;
+        setTimeout(() => player.canShoot = true, player.firingSpeed);
         workshop.close();
         workshopOpen = false;
     }
@@ -198,6 +200,8 @@ function pause() {
         paused = true;
     } else {
         loop();
+        player.canShoot = false;
+        setTimeout(() => player.canShoot = true, player.firingSpeed);
         paused = false;
     }
 }
