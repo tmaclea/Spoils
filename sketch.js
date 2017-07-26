@@ -3,9 +3,12 @@ var zombies = [];
 var bullets = [];
 var parts = [];
 var playerDead = false;
-var NUM_ZOMBIES = 100;
+var NUM_ZOMBIES = 50;
 var workshopOpen = false;
 var paused = false;
+var wave = 0;
+var newWave = false;
+var fcount = 100; //counts frames
 
 function setup() {
     createCanvas(600,600);
@@ -14,8 +17,6 @@ function setup() {
     player = new Player();
     //create workshop
     workshop = new Workshop();
-    //spawn zombies
-    spawnZombies(NUM_ZOMBIES);
     //zombie tracker
     ztracker = new Ztracker();
 }
@@ -26,6 +27,13 @@ function draw() {
     //player display
     // use translate function to always show player in center
     translate(width/2-player.pos.x, height/2-player.pos.y);
+
+    //zombie counter
+    push();
+        fill(0);
+        textSize(16);
+        text("Zombies left: " + zombies.length, player.pos.x+175, player.pos.y-275);
+    pop();
 
     //create grid lines
     drawGrid(-width*2, -height*2, width*2, height*2);
@@ -62,11 +70,24 @@ function draw() {
             zombies.splice(i, 1);
         }
     }
-    //make sure there are always 200 zombies
-    //no need for recursive spawnZombies function
-    if(zombies.length < NUM_ZOMBIES) { spawnZombies(1); }
 
-
+    //when wave is over, start new wave
+    if(zombies.length == 0) { newWave = true; wave++; }
+    if(newWave) {
+        spawnZombies(1);
+        if(zombies.length == NUM_ZOMBIES) {
+            newWave = false;
+            fcount = 0; //frames
+        }
+    }
+    if(fcount < 100) {
+        push();
+            fill(0);
+            textSize(48);
+            text("Wave " + wave, player.pos.x-75, player.pos.y-100);
+        pop();
+        fcount++;
+    }
 
     //do stuff with bullets
     for (var i = 0; i < bullets.length; i++) {
@@ -161,7 +182,6 @@ function spawnZombies(num) {
         //make sure zombie doesn't spawn in the view of the player
         if(randW > player.pos.x - areaView && randW < player.pos.x + areaView &&
             randH > player.pos.y - areaView && randH < player.pos.y + areaView) {
-                //do nothing
         } else {
             zombies.push(new Zombie(randW, randH, player.killCount, ztracker));
         }
@@ -211,11 +231,11 @@ function restart() {
     player.startOver();
     workshop.reset();
     
-    //kill and respawn all zombies
+    //kill all zombies and reset wave
     for(var i = zombies.length; i >= 0; i--) {
         zombies.splice(i,1);
     }
-    spawnZombies(NUM_ZOMBIES);
+    wave = 1;
 
     //remove all bullets
     for(var j = bullets.length; j >= 0; j--) {
