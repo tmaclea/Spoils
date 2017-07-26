@@ -132,6 +132,7 @@ function draw() {
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
     if(keyIsDown(SHIFT)) {workshop.open(player); workshopOpen = true;}
+    if(keyIsDown(90)) {locateNearest();}
 }
 
 function mousePressed() {
@@ -176,7 +177,7 @@ function keyPressed() {
 
 function spawnZombies(num) {
     var areaView = (height / 2) + player.r; //works as long as height = width
-    for (i = 0; i < num; i++) {
+    for (var i = 0; i < num; i++) {
         var randW = random(-width * 2, width * 2);
         var randH = random(-height * 2, height * 2);
         //make sure zombie doesn't spawn in the view of the player
@@ -186,6 +187,20 @@ function spawnZombies(num) {
             zombies.push(new Zombie(randW, randH, player.killCount, ztracker));
         }
     }
+}
+
+function locateNearest() {
+    var nearestX, nearestY, d;
+    var shortest = 999999;
+    for(var i = 0; i < zombies.length; i++) {
+        d = dist(player.pos.x, player.pos.y, zombies[i].pos.x, zombies[i].pos.y);
+        if(d < shortest) {
+            shortest = d;
+            nearestX = zombies[i].pos.x;
+            nearestY = zombies[i].pos.y;
+        }
+    }
+    line(player.pos.x, player.pos.y, nearestX, nearestY);
 }
 
 function drawGrid(topLeftX, topLeftY, botRightX, botRightY) {
