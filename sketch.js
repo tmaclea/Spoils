@@ -250,7 +250,7 @@ function restart() {
     for(var i = zombies.length; i >= 0; i--) {
         zombies.splice(i,1);
     }
-    wave = 1;
+    wave = 0;
 
     //remove all bullets
     for(var j = bullets.length; j >= 0; j--) {
