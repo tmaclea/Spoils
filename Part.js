@@ -18,6 +18,10 @@ Part.prototype.show = function() {
 }
 
 Part.prototype.update = function() {
+    //constrain to edge of play area
+    this.pos.y = constrain(this.pos.y, -height*2+this.r, height*2-this.r);
+    this.pos.x = constrain(this.pos.x, -width*2+this.r, width*2-this.r);
+
     this.pos.add(this.vel);
     this.vel.mult(this.friction);
 }
