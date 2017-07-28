@@ -12,6 +12,8 @@ function Player() {
     this.maxParts = 25;
     this.frameCount = 0;
     this.reloadText = ".";
+    this.boosted = false;
+    this.powerupText = "";
 }
 
 Player.prototype.show = function() {
@@ -87,7 +89,10 @@ Player.prototype.getPart = function(part) {
 
 Player.prototype.getPowerup = function(powerup) {
     var d = dist(this.pos.x, this.pos.y, powerup.pos.x, powerup.pos.y);
-    return d < this.r + powerup.r*2;
+    if(player.boosted)
+        return false;
+    else
+        return d < this.r + powerup.r*2;
 }
 
 Player.prototype.reload = function() {
@@ -120,4 +125,6 @@ Player.prototype.startOver = function() {
     this.parts = 0;
     this.maxParts = 25;
     this.damage = 100;
+    this.boosted = false;
+    this.powerupText = "";
 }

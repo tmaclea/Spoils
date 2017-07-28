@@ -17,7 +17,7 @@ Workshop.prototype.upgrades =
         "posX": 130,
         "posY": 150,
         "upgrade": 0,
-        "maxUpgrade": 40,
+        "maxUpgrade": 25,
         "cost": 10
     },
     {

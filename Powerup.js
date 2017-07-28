@@ -26,27 +26,23 @@ Powerup.prototype.update = function() {
 }
 
 Powerup.prototype.getRandom = function() {
-    var randBoost = floor(random(0,5));
+    var randBoost = floor(random(0,4));
     switch(randBoost) {
         case 0:
-            this.type = "agility";
+            this.type = "Agility";
             this.color = color(255,255,0);
             break;
         case 1:
-            this.type = "shooting";
-            this.color = color(245,245,220);
+            this.type = "Quick shot";
+            this.color = color(200,200,175);
             break;
         case 2:
-            this.type = "invincible";
+            this.type = "Invincibility";
             this.color = color(0,0,200);
             break;
         case 3:
-            this.type = "damage";
+            this.type = "Damage";
             this.color = color(255,0,0);
-            break;
-        case 4:
-            this.type = "health";
-            this.color = color(255);
             break;
     }
 }
@@ -54,29 +50,52 @@ Powerup.prototype.getRandom = function() {
 Powerup.prototype.boost = function(player) {
     var orig;
     switch(this.type) {
-        case "agility":
+        case "Agility":
             orig = player.vel;
-            player.vel = 5;
-            setTimeout(() => player.vel = orig, this.boostTime);
+            player.vel = 3.5;
+            player.boosted = true;
+            player.powerupText = "Active: Agility";
+            setTimeout(() => { 
+                player.vel = orig;
+                player.boosted = false;
+                player.powerupText = "";
+             }, this.boostTime);
             break;
-        case "shooting":
+        case "Quick shot":
             orig = player.firingSpeed;
             player.firingSpeed = 1;
-            setTimeout(() => player.firingSpeed = orig, this.boostTime);
+            player.boosted = true;
+            player.powerupText = "Active: Quick shot";
+            setTimeout(() => { 
+                player.firingSpeed = orig; 
+                player.boosted = false;
+                player.powerupText = "";
+            }, this.boostTime);
             break;
-        case "invincible":
+        case "Invincibility":
             orig = player.health;
+            var origMax = player.maxHealth;
             player.health = 9999999;
-            setTimeout(() => player.health = orig, this.boostTime);
+            player.maxHealth = 9999999;
+            player.boosted = true;
+            player.powerupText = "Active: Invincibility";
+            setTimeout(() => { 
+                player.health = orig; 
+                player.maxHealth = origMax;
+                player.boosted = false;
+                player.powerupText = "";
+             }, this.boostTime);
             break;
-        case "damage":
+        case "Damage":
             orig = player.damage;
             player.damage = 10000;
-            setTimeout(() => player.damage = orig, this.boostTime);
-            break;
-        case "health":
-            player.health += ceil(player.maxHealth * .25);
-            if(player.health > player.maxHealth) { player.health = player.maxHealth; }
+            player.boosted = true;
+            player.powerupText = "Active: Damage";
+            setTimeout(() => { 
+                player.damage = orig;
+                player.boosted = false;
+                player.powerupText = "";
+             },  this.boostTime);
             break;
     }
 }
