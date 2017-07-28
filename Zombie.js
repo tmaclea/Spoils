@@ -68,7 +68,7 @@ Zombie.prototype.attack = function(player) {
 Zombie.prototype.getRandomType = function(ztracker) {
     var chance = random();
     switch(true) {
-        case (chance < (this.playerKills / 12000) && ztracker.type5 > 5):
+        case (chance < (this.playerKills / 12000) && ztracker.type5 > 25):
             console.log("Type 6 spawned");
             this.color = color(0, 0, 200);
             this.health = 10000;
@@ -182,6 +182,10 @@ Zombie.prototype.die = function() {
         }
     }
     return parts;
+}
+
+Zombie.prototype.dropPowerup = function() {
+    return new Powerup(this.pos.x, this.pos.y);
 }
 
 Zombie.prototype.noOverlap = function(otherZombie) {

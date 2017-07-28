@@ -1,9 +1,11 @@
 var player, workshop, ztracker;
 var zombies = [];
+var NUM_ZOMBIES = 50;
 var bullets = [];
 var parts = [];
+var powerups = [];
+var powerupChance = 0.05;
 var playerDead = false;
-var NUM_ZOMBIES = 50;
 var workshopOpen = false;
 var paused = false;
 var wave = 0;
@@ -28,13 +30,6 @@ function draw() {
     // use translate function to always show player in center
     translate(width/2-player.pos.x, height/2-player.pos.y);
 
-    //zombie counter
-    push();
-        fill(0);
-        textSize(16);
-        text("Zombies left: " + zombies.length, player.pos.x+175, player.pos.y-275);
-    pop();
-
     //create grid lines
     drawGrid(-width*2, -height*2, width*2, height*2);
 
@@ -42,9 +37,19 @@ function draw() {
     for(var i = 0; i < parts.length; i++) {
         parts[i].show();
         parts[i].update();
-        if(player.pickUp(parts[i]) || parts[i].done){
+        if(player.getPart(parts[i]) || parts[i].done){
             parts.splice(i, 1);
         }
+    }
+
+    //do stuff with powerups
+    for(var i = 0; i < powerups.length; i++) {
+        powerups[i].show();
+        powerups[i].update();
+        if(player.getPowerup(powerups[i])) {
+            powerups[i].boost(player);
+            powerups.splice(i,1);
+        } else if(powerups[i].done) powerups.splice(i,1);
     }
 
     //do stuff with zombies
@@ -67,6 +72,9 @@ function draw() {
         if(zombies[i].dead()){
             player.killCount++;
             parts = parts.concat(zombies[i].die());
+            if(random() < powerupChance) {
+                powerups.push(zombies[i].dropPowerup());
+            }
             zombies.splice(i, 1);
         }
     }
@@ -114,6 +122,16 @@ function draw() {
     if(!player.canShoot) { 
         player.reload(); 
     }
+
+    //zombie counter and powerup display
+    push();
+        fill(0);
+        textSize(16);
+        textStyle(BOLD);
+        text("Zombies left: " + zombies.length, player.pos.x+170, player.pos.y-275);
+        if(player.boosted) { text(player.powerupText, player.pos.x-290, player.pos.y-275); }
+    pop();
+
     //show paused text if game is paused
     if(paused) {
         fill(0);
@@ -131,7 +149,7 @@ function draw() {
     if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {player.move('left');} 
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
-    if(keyIsDown(SHIFT)) {workshop.open(player); workshopOpen = true;}
+    if(keyIsDown(SHIFT) && !player.boosted) {workshop.open(player); workshopOpen = true;}
     if(keyIsDown(90)) {locateNearest();}
 }
 
@@ -148,7 +166,7 @@ function mousePressed() {
 }
 
 function keyReleased() {
-    if(keyCode === SHIFT) {
+    if(keyCode === SHIFT && !player.boosted) {
         player.canShoot = false;
         setTimeout(() => player.canShoot = true, player.firingSpeed);
         workshop.close();
