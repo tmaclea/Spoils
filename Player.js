@@ -75,7 +75,7 @@ Player.prototype.showHealth = function() {
     pop();
 }
 
-Player.prototype.pickUp = function(part) {
+Player.prototype.getPart = function(part) {
     var d = dist(this.pos.x, this.pos.y, part.pos.x, part.pos.y);
     var get = d < this.r + part.r*2 && this.parts < this.maxParts && part.value <= this.maxParts - this.parts;
     if(get) {
@@ -83,6 +83,11 @@ Player.prototype.pickUp = function(part) {
         if(this.parts > this.maxParts) {this.parts = this.maxParts;}
     }
     return get;
+}
+
+Player.prototype.getPowerup = function(powerup) {
+    var d = dist(this.pos.x, this.pos.y, powerup.pos.x, powerup.pos.y);
+    return d < this.r + powerup.r*2;
 }
 
 Player.prototype.reload = function() {

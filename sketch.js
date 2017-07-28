@@ -2,6 +2,8 @@ var player, workshop, ztracker;
 var zombies = [];
 var bullets = [];
 var parts = [];
+var powerups = [];
+var powerupChance = 0.04;
 var playerDead = false;
 var NUM_ZOMBIES = 50;
 var workshopOpen = false;
@@ -42,8 +44,18 @@ function draw() {
     for(var i = 0; i < parts.length; i++) {
         parts[i].show();
         parts[i].update();
-        if(player.pickUp(parts[i]) || parts[i].done){
+        if(player.getPart(parts[i]) || parts[i].done){
             parts.splice(i, 1);
+        }
+    }
+
+    //do stuff with powerups
+    for(var i = 0; i < powerups.length; i++) {
+        powerups[i].show();
+        powerups[i].update();
+        if(player.getPowerup(powerups[i]) || powerups[i].done) {
+            powerups[i].boost(player);
+            powerups.splice(i,1);
         }
     }
 
@@ -67,6 +79,9 @@ function draw() {
         if(zombies[i].dead()){
             player.killCount++;
             parts = parts.concat(zombies[i].die());
+            if(random() < powerupChance) {
+                powerups.push(zombies[i].dropPowerup());
+            }
             zombies.splice(i, 1);
         }
     }

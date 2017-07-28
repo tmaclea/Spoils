@@ -184,6 +184,10 @@ Zombie.prototype.die = function() {
     return parts;
 }
 
+Zombie.prototype.dropPowerup = function() {
+    return new Powerup(this.pos.x, this.pos.y);
+}
+
 Zombie.prototype.noOverlap = function(otherZombie) {
     var zomb = createVector(otherZombie.pos.x, otherZombie.pos.y);
     zomb.sub(this.pos);
