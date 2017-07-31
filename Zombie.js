@@ -12,7 +12,7 @@ function Zombie(posX, posY, kills, ztracker) {
     this.parts = random(1,5); //amount of parts held by zombie
     this.xoff = random(-10000,10000); //x offset for perlin noise
     this.yoff = random(-10000,10000); //y offset for perlin noise
-    this.wobble = random(1000); //magnitude of the wobble
+    this.wobble = 500; //magnitude of the wobble
     this.playerKills = kills;
     
     this.getRandomType(ztracker);
@@ -28,24 +28,29 @@ Zombie.prototype.move = function(playerX, playerY) {
     this.pos.y = constrain(this.pos.y, -height*2+this.r, height*2-this.r);
     this.pos.x = constrain(this.pos.x, -width*2+this.r, width*2-this.r);
 
+    var playerPos = createVector(playerX, playerY);
+
     if(this.vel < this.maxVel) {
-        this.vel += .8;
+        this.vel += .5;
     } else {
         this.vel = this.maxVel;
+        playerPos.x = playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble);
+        playerPos.y = playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble);
+        this.xoff += 0.01;
+        this.yoff += 0.01;
     }
-    var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
-    this.xoff += 0.01;
-    this.yoff += 0.01;
-    player.sub(this.pos);
-    player.setMag(this.vel);
-    this.pos.add(player);
+    // var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
+
+    playerPos.sub(this.pos);
+    playerPos.setMag(this.vel);
+    this.pos.add(playerPos);
 }
 
 
 Zombie.prototype.getShot = function(bullet) {
     var angle = createVector(bullet.pos.x, bullet.pos.y);
     angle.sub(this.pos);
-    angle.setMag(-5);
+    angle.setMag(1);
     this.pos.add(angle);
     this.vel -= 3;
     this.health -= bullet.calculateDamage();
