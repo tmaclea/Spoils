@@ -4,14 +4,11 @@ function Player() {
     this.vel = 1;
     this.maxHealth = 100;
     this.health = 100;
-    this.firingSpeed = 2100; //in milliseconds
     this.damage = 100;
-    this.canShoot = true;
+    this.range = 50;
     this.killCount = 0;
     this.parts = 0;
     this.maxParts = 25;
-    this.frameCount = 0;
-    this.reloadText = ".";
     this.boosted = false;
     this.powerupText = "";
 }
@@ -46,10 +43,8 @@ Player.prototype.move = function(dir) {
 }
 
 
-Player.prototype.shoot = function(pos, shootX, shootY) {
-    this.canShoot = false;
-    this.frameCount = 0;
-    return new Bullet(pos, shootX, shootY);
+Player.prototype.shoot = function(p, shootX, shootY) {
+    return new Bullet(p, shootX, shootY);
 }
 
 Player.prototype.showHealth = function() {
@@ -72,7 +67,7 @@ Player.prototype.showHealth = function() {
         if(this.parts == this.maxParts) {
             fill(0);
             textSize(12);
-            text("Bag full. Hold shift to open workshop.", this.pos.x-60, this.pos.y + 275);
+            text("Bag full. Press shift to open workshop.", this.pos.x-50, this.pos.y + 275);
     }
     pop();
 }
@@ -95,32 +90,12 @@ Player.prototype.getPowerup = function(powerup) {
         return d < this.r + powerup.r*2;
 }
 
-Player.prototype.reload = function() {
-    var posX = this.pos.x - 10;
-    var posY = this.pos.y - 25;
-    push();
-        fill(227,0,235);
-        textSize(24);
-        textStyle(BOLD);
-        text(this.reloadText, posX, posY);
-    pop();
-
-    if(this.frameCount % 10 == 0) {
-        this.reloadText += ".";
-    }
-    if(this.reloadText == "....") {
-        this.reloadText = ".";
-    }
-
-    this.frameCount++;
-}
 
 Player.prototype.startOver = function() {
     this.pos = createVector(width/2, height/2);
     this.vel = 1;
     this.maxHealth = 100;
     this.health = 100;
-    this.firingSpeed = 2100; //in milliseconds
     this.killCount = 0;
     this.parts = 0;
     this.maxParts = 25;

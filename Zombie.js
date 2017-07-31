@@ -2,7 +2,7 @@ function Zombie(posX, posY, kills, ztracker) {
     this.pos = createVector(posX, posY);
     this.r = 16;
     this.vel = .1;
-    this.maxVel = .05;
+    this.maxVel = .1;
     this.health = 200;
     this.maxHealth = 200;
     this.strength = 50;
@@ -12,7 +12,7 @@ function Zombie(posX, posY, kills, ztracker) {
     this.parts = random(1,5); //amount of parts held by zombie
     this.xoff = random(-10000,10000); //x offset for perlin noise
     this.yoff = random(-10000,10000); //y offset for perlin noise
-    this.wobble = random(1000); //magnitude of the wobble
+    this.wobble = 400; //magnitude of the wobble
     this.playerKills = kills;
     
     this.getRandomType(ztracker);
@@ -28,27 +28,32 @@ Zombie.prototype.move = function(playerX, playerY) {
     this.pos.y = constrain(this.pos.y, -height*2+this.r, height*2-this.r);
     this.pos.x = constrain(this.pos.x, -width*2+this.r, width*2-this.r);
 
+    var playerPos = createVector(playerX, playerY);
+
     if(this.vel < this.maxVel) {
-        this.vel += .8;
+        this.vel += .5;
     } else {
         this.vel = this.maxVel;
+        playerPos.x = playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble);
+        playerPos.y = playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble);
+        this.xoff += 0.01;
+        this.yoff += 0.01;
     }
-    var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
-    this.xoff += 0.01;
-    this.yoff += 0.01;
-    player.sub(this.pos);
-    player.setMag(this.vel);
-    this.pos.add(player);
+    // var player = createVector(playerX+map(noise(this.xoff), 0, 1, -this.wobble, this.wobble), playerY+map(noise(this.yoff), 0, 1, -this.wobble, this.wobble)); //perlin noise for wobble
+
+    playerPos.sub(this.pos);
+    playerPos.setMag(this.vel);
+    this.pos.add(playerPos);
 }
 
 
-Zombie.prototype.getShot = function(player) {
-    var angle = createVector(player.pos.x, player.pos.y);
+Zombie.prototype.getShot = function(bullet) {
+    var angle = createVector(bullet.pos.x, bullet.pos.y);
     angle.sub(this.pos);
-    angle.setMag(-10);
+    angle.setMag(1);
     this.pos.add(angle);
     this.vel -= 3;
-    this.health -= player.damage;
+    this.health -= bullet.calculateDamage();
 }
 
 Zombie.prototype.isInRange = function(something) {
@@ -73,7 +78,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.color = color(0, 0, 200);
             this.health = 10000;
             this.maxHealth = 10000;
-            this.vel = 2.2;
+            this.vel = 2.3;
             this.maxVel = 2.2;
             this.strength = 100;
             this.attackSpeed = 250;
@@ -88,43 +93,43 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.vel = 1.5;
             this.maxVel = 1.5;
             this.strength = 75;
-            this.attackSpeed = 500;
+            this.attackSpeed = 250;
             this.parts = random(75,150);
             break;
         case (chance < (this.playerKills / 7500) && ztracker.type3 > 15):
             console.log("Type 4 spawned");
             ztracker.type4++;
             this.color = color(255, 130, 200);
-            this.health = 5000;
-            this.maxHealth = 5000;
+            this.health = 6000;
+            this.maxHealth = 6000;
             this.vel = 1.25;
             this.maxVel = 1.25;
             this.strength = 75;
-            this.attackSpeed = 750;
+            this.attackSpeed = 500;
             this.parts = random(50,100);
             break;
-        case (chance < (this.playerKills / 6000) && ztracker.type2 > 10):
+        case (chance < (this.playerKills / 5000) && ztracker.type2 > 10):
             console.log("Type 3 spawned");
             ztracker.type3++;
             this.color = color(130, 0, 130);
-            this.health = 3000;
-            this.maxHealth = 3000;
+            this.health = 4000;
+            this.maxHealth = 4000;
             this.vel = 1;
             this.maxVel = 1;
             this.strength = 75;
-            this.attackSpeed = 1000;
+            this.attackSpeed = 750;
             this.parts = random(30,60);
             break;
-        case (chance < (this.playerKills / 3000) && ztracker.type1 > 5):
+        case (chance < (this.playerKills / 2500) && ztracker.type1 > 5):
             console.log("Type 2 spawned");
             ztracker.type2++;
             this.color = color(200, 200, 0);
-            this.health = 1000;
-            this.maxHealth = 1000;
+            this.health = 2000;
+            this.maxHealth = 2000;
             this.vel = .75;
             this.maxVel = .75;
             this.strength = 50;
-            this.attackSpeed = 1500;
+            this.attackSpeed = 1000;
             this.parts = random(10,20);
             break;
         case chance < (this.playerKills / 500):

@@ -30,24 +30,21 @@ Powerup.prototype.update = function() {
 }
 
 Powerup.prototype.getRandom = function() {
-    var randBoost = floor(random(0,4));
+    var randBoost = floor(random(0,3));
     switch(randBoost) {
         case 0:
             this.type = "Agility";
             this.color = color(255,255,0);
             break;
         case 1:
-            this.type = "Quick shot";
-            this.color = color(200,200,175);
+            this.type = "Damage";
+            this.color = color(255,0,0);
             break;
         case 2:
             this.type = "Invincibility";
             this.color = color(0,0,200);
             break;
-        case 3:
-            this.type = "Damage";
-            this.color = color(255,0,0);
-            break;
+
     }
 }
 
@@ -65,16 +62,16 @@ Powerup.prototype.boost = function(player) {
                 player.powerupText = "";
              }, this.boostTime);
             break;
-        case "Quick shot":
-            orig = player.firingSpeed;
-            player.firingSpeed = 1;
+        case "Damage":
+            orig = player.damage;
+            player.damage = orig*2;
             player.boosted = true;
-            player.powerupText = "Active: Quick shot";
+            player.powerupText = "Active: Damage x2";
             setTimeout(() => { 
-                player.firingSpeed = orig; 
+                player.damage = orig;
                 player.boosted = false;
                 player.powerupText = "";
-            }, this.boostTime);
+             },  this.boostTime);
             break;
         case "Invincibility":
             orig = player.health;
@@ -89,17 +86,6 @@ Powerup.prototype.boost = function(player) {
                 player.boosted = false;
                 player.powerupText = "";
              }, this.boostTime);
-            break;
-        case "Damage":
-            orig = player.damage;
-            player.damage = 10000;
-            player.boosted = true;
-            player.powerupText = "Active: Damage";
-            setTimeout(() => { 
-                player.damage = orig;
-                player.boosted = false;
-                player.powerupText = "";
-             },  this.boostTime);
             break;
     }
 }

@@ -103,11 +103,10 @@ function draw() {
         bullets[i].fire();
         for (var j = 0; j < zombies.length; j++) {
             if(bullets[i].hits(zombies[j])){
-                zombies[j].getShot(player);
+                zombies[j].getShot(bullets[i]);
                 bullets.splice(i,1);
                 break;
-            }
-            if(bullets[i].offscreen()) {
+            } else if(bullets[i].offscreen()) {
                 bullets.splice(i, 1);
                 break;
             }
@@ -119,9 +118,6 @@ function draw() {
 
     //show health
     player.showHealth();
-    if(!player.canShoot) { 
-        player.reload(); 
-    }
 
     //zombie counter and powerup display
     push();
@@ -138,6 +134,10 @@ function draw() {
         textSize(48);
         text("Paused", player.pos.x-80, player.pos.y-100);
     }
+
+    //show workshop if workshop is open
+    if(workshopOpen) { workshop.open(player); }
+
     //game over when health is 0
     if(player.health <= 0) {
         gameOver();
@@ -149,7 +149,6 @@ function draw() {
     if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {player.move('left');} 
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
-    if(keyIsDown(SHIFT) && !player.boosted) {workshop.open(player); workshopOpen = true;}
     if(keyIsDown(90)) {locateNearest();}
 }
 
@@ -158,22 +157,7 @@ function mousePressed() {
         return;
     }
 
-    if(player.canShoot){
-        bullets.push(player.shoot(player.pos, mouseX, mouseY));
-        //must start timer outside of the player.shoot function
-        setTimeout(() => player.canShoot = true, player.firingSpeed);
-    }
-}
-
-function keyReleased() {
-    if(keyCode === SHIFT && !player.boosted) {
-        player.canShoot = false;
-        setTimeout(() => player.canShoot = true, player.firingSpeed);
-        workshop.close();
-        workshopOpen = false;
-    }
-
-    return false; //prevent any default browser behavior
+    bullets.push(player.shoot(player, mouseX, mouseY));
 }
 
 function keyPressed() {
@@ -182,6 +166,7 @@ function keyPressed() {
     if(keyCode == ESCAPE && !workshopOpen) {
         pause();
     }
+
     //change selection
     if(workshopOpen) {workshop.moveSelection(keyCode, player);}
 
@@ -189,6 +174,12 @@ function keyPressed() {
     if(workshopOpen && keyCode == 13) {workshop.buy(player);}
 
     if(keyCode == 32 && playerDead) restart();
+
+    //open workshop
+    if(keyCode == SHIFT) {
+        if(!workshopOpen) { workshopOpen = true; }
+        else { workshopOpen = false; workshop.close(); }
+    }
 
     return false; //prevent default browser behavior
 }
@@ -253,8 +244,6 @@ function pause() {
         paused = true;
     } else {
         loop();
-        player.canShoot = false;
-        setTimeout(() => player.canShoot = true, player.firingSpeed);
         paused = false;
     }
 }
