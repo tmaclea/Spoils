@@ -64,9 +64,9 @@ Powerup.prototype.boost = function(player) {
             break;
         case "Damage":
             orig = player.damage;
-            player.damage = 10000;
+            player.damage = orig*2;
             player.boosted = true;
-            player.powerupText = "Active: Damage";
+            player.powerupText = "Active: Damage x2";
             setTimeout(() => { 
                 player.damage = orig;
                 player.boosted = false;

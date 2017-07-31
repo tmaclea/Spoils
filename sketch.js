@@ -145,7 +145,7 @@ function draw() {
     if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {player.move('left');} 
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
-    if(keyIsDown(SHIFT) && !player.boosted) {workshop.open(player); workshopOpen = true;}
+    if(keyIsDown(SHIFT)) {workshop.open(player); workshopOpen = true;}
     if(keyIsDown(90)) {locateNearest();}
 }
 
@@ -158,7 +158,7 @@ function mousePressed() {
 }
 
 function keyReleased() {
-    if(keyCode === SHIFT && !player.boosted) {
+    if(keyCode === SHIFT) {
         workshop.close();
         workshopOpen = false;
     }

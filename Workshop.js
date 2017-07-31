@@ -17,7 +17,7 @@ Workshop.prototype.upgrades =
         "posX": 130,
         "posY": 150,
         "upgrade": 0,
-        "maxUpgrade": 25,
+        "maxUpgrade": 13,
         "cost": 10
     },
     {
@@ -28,7 +28,7 @@ Workshop.prototype.upgrades =
         "posX": 130,
         "posY": 225,
         "upgrade": 0,
-        "maxUpgrade": 29,
+        "maxUpgrade": 15,
         "cost": 10
     },
     {
@@ -61,7 +61,7 @@ Workshop.prototype.upgrades =
         "posX": 130,
         "posY": 450,
         "upgrade": 0,
-        "maxUpgrade": 26,
+        "maxUpgrade": 18,
         "cost": 10
     },
     {
@@ -186,7 +186,7 @@ Workshop.prototype.buy = function(player) {
         player.numUpgrades++;
         switch(item.name) {
             case "vel":
-                player.vel += 0.1
+                player.vel += 0.2
                 item.cost = floor(item.cost * 1.5);
                 break;
             case "maxHealth":
@@ -206,7 +206,7 @@ Workshop.prototype.buy = function(player) {
                 break;
             case "damage":
                 player.damage = floor(player.damage * 1.2);
-                item.cost = floor(item.cost * 1.5);
+                item.cost = floor(item.cost * 1.3);
                 break;
             case "health":
                 player.health += ceil(player.maxHealth * .25);

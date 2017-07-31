@@ -2,7 +2,7 @@ function Zombie(posX, posY, kills, ztracker) {
     this.pos = createVector(posX, posY);
     this.r = 16;
     this.vel = .1;
-    this.maxVel = .05;
+    this.maxVel = .1;
     this.health = 200;
     this.maxHealth = 200;
     this.strength = 50;
@@ -88,43 +88,43 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.vel = 1.5;
             this.maxVel = 1.5;
             this.strength = 75;
-            this.attackSpeed = 500;
+            this.attackSpeed = 250;
             this.parts = random(75,150);
             break;
         case (chance < (this.playerKills / 7500) && ztracker.type3 > 15):
             console.log("Type 4 spawned");
             ztracker.type4++;
             this.color = color(255, 130, 200);
-            this.health = 5000;
-            this.maxHealth = 5000;
+            this.health = 6000;
+            this.maxHealth = 6000;
             this.vel = 1.25;
             this.maxVel = 1.25;
             this.strength = 75;
-            this.attackSpeed = 750;
+            this.attackSpeed = 500;
             this.parts = random(50,100);
             break;
-        case (chance < (this.playerKills / 6000) && ztracker.type2 > 10):
+        case (chance < (this.playerKills / 5000) && ztracker.type2 > 10):
             console.log("Type 3 spawned");
             ztracker.type3++;
             this.color = color(130, 0, 130);
-            this.health = 3000;
-            this.maxHealth = 3000;
+            this.health = 4000;
+            this.maxHealth = 4000;
             this.vel = 1;
             this.maxVel = 1;
             this.strength = 75;
-            this.attackSpeed = 1000;
+            this.attackSpeed = 750;
             this.parts = random(30,60);
             break;
-        case (chance < (this.playerKills / 3000) && ztracker.type1 > 5):
+        case (chance < (this.playerKills / 2500) && ztracker.type1 > 5):
             console.log("Type 2 spawned");
             ztracker.type2++;
             this.color = color(200, 200, 0);
-            this.health = 1000;
-            this.maxHealth = 1000;
+            this.health = 2000;
+            this.maxHealth = 2000;
             this.vel = .75;
             this.maxVel = .75;
             this.strength = 50;
-            this.attackSpeed = 1500;
+            this.attackSpeed = 1000;
             this.parts = random(10,20);
             break;
         case chance < (this.playerKills / 500):
