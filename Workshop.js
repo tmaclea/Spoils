@@ -21,7 +21,7 @@ Workshop.prototype.upgrades =
         "cost": 10
     },
     {
-        "name": "firingSpeed",
+        "name": "range",
         "text": "Improve gun",
         "selected": false,
         "hasProgress": true,
@@ -200,8 +200,8 @@ Workshop.prototype.buy = function(player) {
                 player.maxParts *= 2;
                 item.cost = player.maxParts;
                 break;
-            case "firingSpeed":
-                player.firingSpeed -= 100;
+            case "range":
+                player.range += 10;
                 item.cost = floor(item.cost * 1.5);
                 break;
             case "damage":
@@ -228,8 +228,8 @@ Workshop.prototype.getUpgradeValue = function(item, player) {
         case "vel": 
             value = "Agility " + player.vel.toFixed(1);
             break;
-        case "firingSpeed":
-            value = "Firing speed " + item.upgrade;
+        case "range":
+            value = "Gun range " + item.upgrade;
             break;
         case "maxHealth":
             value = "Max health: " + player.maxHealth;

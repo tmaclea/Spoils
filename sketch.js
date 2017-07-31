@@ -103,11 +103,10 @@ function draw() {
         bullets[i].fire();
         for (var j = 0; j < zombies.length; j++) {
             if(bullets[i].hits(zombies[j])){
-                zombies[j].getShot(player);
+                zombies[j].getShot(bullets[i]);
                 bullets.splice(i,1);
                 break;
-            }
-            if(bullets[i].offscreen()) {
+            } else if(bullets[i].offscreen()) {
                 bullets.splice(i, 1);
                 break;
             }
@@ -119,9 +118,6 @@ function draw() {
 
     //show health
     player.showHealth();
-    if(!player.canShoot) { 
-        player.reload(); 
-    }
 
     //zombie counter and powerup display
     push();
@@ -158,17 +154,11 @@ function mousePressed() {
         return;
     }
 
-    if(player.canShoot){
-        bullets.push(player.shoot(player.pos, mouseX, mouseY));
-        //must start timer outside of the player.shoot function
-        setTimeout(() => player.canShoot = true, player.firingSpeed);
-    }
+    bullets.push(player.shoot(player, mouseX, mouseY));
 }
 
 function keyReleased() {
     if(keyCode === SHIFT && !player.boosted) {
-        player.canShoot = false;
-        setTimeout(() => player.canShoot = true, player.firingSpeed);
         workshop.close();
         workshopOpen = false;
     }
@@ -253,8 +243,6 @@ function pause() {
         paused = true;
     } else {
         loop();
-        player.canShoot = false;
-        setTimeout(() => player.canShoot = true, player.firingSpeed);
         paused = false;
     }
 }

@@ -42,13 +42,13 @@ Zombie.prototype.move = function(playerX, playerY) {
 }
 
 
-Zombie.prototype.getShot = function(player) {
-    var angle = createVector(player.pos.x, player.pos.y);
+Zombie.prototype.getShot = function(bullet) {
+    var angle = createVector(bullet.pos.x, bullet.pos.y);
     angle.sub(this.pos);
-    angle.setMag(-10);
+    angle.setMag(-5);
     this.pos.add(angle);
     this.vel -= 3;
-    this.health -= player.damage;
+    this.health -= bullet.calculateDamage();
 }
 
 Zombie.prototype.isInRange = function(something) {
@@ -73,7 +73,7 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.color = color(0, 0, 200);
             this.health = 10000;
             this.maxHealth = 10000;
-            this.vel = 2.2;
+            this.vel = 2.3;
             this.maxVel = 2.2;
             this.strength = 100;
             this.attackSpeed = 250;
