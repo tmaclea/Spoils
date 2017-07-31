@@ -134,6 +134,10 @@ function draw() {
         textSize(48);
         text("Paused", player.pos.x-80, player.pos.y-100);
     }
+
+    //show workshop if workshop is open
+    if(workshopOpen) { workshop.open(player); }
+
     //game over when health is 0
     if(player.health <= 0) {
         gameOver();
@@ -145,7 +149,6 @@ function draw() {
     if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {player.move('left');} 
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
-    if(keyIsDown(SHIFT)) {workshop.open(player); workshopOpen = true;}
     if(keyIsDown(90)) {locateNearest();}
 }
 
@@ -157,21 +160,13 @@ function mousePressed() {
     bullets.push(player.shoot(player, mouseX, mouseY));
 }
 
-function keyReleased() {
-    if(keyCode === SHIFT) {
-        workshop.close();
-        workshopOpen = false;
-    }
-
-    return false; //prevent any default browser behavior
-}
-
 function keyPressed() {
 
     //pause
     if(keyCode == ESCAPE && !workshopOpen) {
         pause();
     }
+
     //change selection
     if(workshopOpen) {workshop.moveSelection(keyCode, player);}
 
@@ -179,6 +174,12 @@ function keyPressed() {
     if(workshopOpen && keyCode == 13) {workshop.buy(player);}
 
     if(keyCode == 32 && playerDead) restart();
+
+    //open workshop
+    if(keyCode == SHIFT) {
+        if(!workshopOpen) { workshopOpen = true; }
+        else { workshopOpen = false; workshop.close(); }
+    }
 
     return false; //prevent default browser behavior
 }

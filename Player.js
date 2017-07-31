@@ -67,7 +67,7 @@ Player.prototype.showHealth = function() {
         if(this.parts == this.maxParts) {
             fill(0);
             textSize(12);
-            text("Bag full. Hold shift to open workshop.", this.pos.x-60, this.pos.y + 275);
+            text("Bag full. Press shift to open workshop.", this.pos.x-50, this.pos.y + 275);
     }
     pop();
 }

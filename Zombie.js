@@ -12,7 +12,7 @@ function Zombie(posX, posY, kills, ztracker) {
     this.parts = random(1,5); //amount of parts held by zombie
     this.xoff = random(-10000,10000); //x offset for perlin noise
     this.yoff = random(-10000,10000); //y offset for perlin noise
-    this.wobble = 500; //magnitude of the wobble
+    this.wobble = 400; //magnitude of the wobble
     this.playerKills = kills;
     
     this.getRandomType(ztracker);
