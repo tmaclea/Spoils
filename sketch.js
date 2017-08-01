@@ -11,6 +11,7 @@ var paused = false;
 var wave = 0;
 var newWave = false;
 var fcount = 100; //counts frames
+var canShoot = true;
 
 function setup() {
     createCanvas(600,600);
@@ -150,14 +151,12 @@ function draw() {
     if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) {player.move('down');} 
     if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {player.move('right');} 
     if(keyIsDown(90)) {locateNearest();}
-}
 
-function mousePressed() {
-    if(workshopOpen || paused) {
-        return;
+    if(mouseIsPressed && canShoot){
+        canShoot = false;
+        bullets.push(player.shoot(player, mouseX, mouseY));
+        setTimeout(() => canShoot = true, player.firingSpeed);
     }
-
-    bullets.push(player.shoot(player, mouseX, mouseY));
 }
 
 function keyPressed() {
@@ -265,8 +264,13 @@ function restart() {
     }
 
     //remove all parts
-    for(var k = parts.length - 1; k >=0; k--) {
+    for(var k = parts.length - 1; k >= 0; k--) {
         parts.splice(k, 1);
+    }
+
+    //remove all powerups
+    for (var l = powerups.length - 1; l >= 0; l--) {
+        powerups.splice(l, 1);
     }
 
     loop();

@@ -21,23 +21,12 @@ Workshop.prototype.upgrades =
         "cost": 10
     },
     {
-        "name": "range",
-        "text": "Improve gun",
-        "selected": false,
-        "hasProgress": true,
-        "posX": 130,
-        "posY": 225,
-        "upgrade": 0,
-        "maxUpgrade": 15,
-        "cost": 10
-    },
-    {
         "name": "damage",
         "text": "Modify bullets",
         "selected": false,
         "hasProgress": true,
         "posX": 130,
-        "posY": 300,
+        "posY": 225,
         "upgrade": 0,
         "maxUpgrade": 18,
         "cost": 15
@@ -48,7 +37,7 @@ Workshop.prototype.upgrades =
         "selected": false,
         "hasProgress": true,
         "posX": 130,
-        "posY": 375,
+        "posY": 300,
         "upgrade": 0,
         "maxUpgrade": 9,
         "cost": 25
@@ -59,7 +48,7 @@ Workshop.prototype.upgrades =
         "selected": false,
         "hasProgress": true,
         "posX": 130,
-        "posY": 450,
+        "posY": 375,
         "upgrade": 0,
         "maxUpgrade": 15,
         "cost": 20
@@ -69,7 +58,7 @@ Workshop.prototype.upgrades =
         "text": "Heal 25%",
         "selected": false,
         "posX": 130,
-        "posY": 525,
+        "posY": 450,
         "cost": 10
     }
     ]
@@ -198,15 +187,11 @@ Workshop.prototype.buy = function(player) {
                 player.maxHealth = floor(player.maxHealth*1.25);
                 player.health += player.maxHealth - hp;
                 item.cost = floor(item.cost * 1.53);
-                this.upgrades.item[5].cost = floor(this.upgrades.item[5].cost * 1.4); //item 5 = health
+                this.upgrades.item[4].cost = floor(this.upgrades.item[4].cost * 1.4); //item 5 = health
                 break;
             case "maxParts":
                 player.maxParts *= 2;
                 item.cost = player.maxParts;
-                break;
-            case "range":
-                player.range += 10;
-                item.cost = floor(item.cost * 1.61);
                 break;
             case "damage":
                 player.damage = floor(player.damage * 1.2);
@@ -231,9 +216,6 @@ Workshop.prototype.getUpgradeValue = function(item, player) {
     switch(item.name) {
         case "vel": 
             value = "Agility " + player.vel.toFixed(1);
-            break;
-        case "range":
-            value = "Gun range " + item.upgrade;
             break;
         case "maxHealth":
             value = "Max health: " + player.maxHealth;
@@ -268,16 +250,14 @@ Workshop.prototype.close = function() {
 
 Workshop.prototype.reset = function() {
     this.upgrades.item[0].cost = 10;
-    this.upgrades.item[1].cost = 10;
-    this.upgrades.item[2].cost = 15;
-    this.upgrades.item[3].cost = 25;
-    this.upgrades.item[4].cost = 20;
-    this.upgrades.item[5].cost = 10;
+    this.upgrades.item[1].cost = 15;
+    this.upgrades.item[2].cost = 25;
+    this.upgrades.item[3].cost = 20;
+    this.upgrades.item[4].cost = 10;
 
 
     this.upgrades.item[0].upgrade = 0;
     this.upgrades.item[1].upgrade = 0;
     this.upgrades.item[2].upgrade = 0;
     this.upgrades.item[3].upgrade = 0;
-    this.upgrades.item[4].upgrade = 0;
 }
