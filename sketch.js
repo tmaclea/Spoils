@@ -264,8 +264,13 @@ function restart() {
     }
 
     //remove all parts
-    for(var k = parts.length - 1; k >=0; k--) {
+    for(var k = parts.length - 1; k >= 0; k--) {
         parts.splice(k, 1);
+    }
+
+    //remove all powerups
+    for (var l = powerups.length - 1; l >= 0; l--) {
+        powerups.splice(l, 1);
     }
 
     loop();
