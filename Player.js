@@ -11,6 +11,7 @@ function Player() {
     this.maxParts = 25;
     this.boosted = false;
     this.powerupText = "";
+    this.firingSpeed = 150; //in milliseconds
 }
 
 Player.prototype.show = function() {
