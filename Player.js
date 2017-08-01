@@ -1,7 +1,7 @@
 function Player() {
     this.pos = createVector(width/2, height/2);
     this.r = 16; //radius
-    this.vel = 1;
+    this.vel = 2;
     this.maxHealth = 100;
     this.health = 100;
     this.damage = 100;

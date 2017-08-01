@@ -1,8 +1,8 @@
 function Zombie(posX, posY, kills, ztracker) {
     this.pos = createVector(posX, posY);
     this.r = 16;
-    this.vel = .1;
-    this.maxVel = .1;
+    this.vel = .5;
+    this.maxVel = .5;
     this.health = 200;
     this.maxHealth = 200;
     this.strength = 50;
@@ -78,9 +78,10 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.color = color(0, 0, 200);
             this.health = 10000;
             this.maxHealth = 10000;
-            this.vel = 2.3;
-            this.maxVel = 2.2;
-            this.strength = 100;
+            this.vel = 2.5;
+            this.maxVel = 2.5;
+            this.r = 30
+            this.strength = 150;
             this.attackSpeed = 250;
             this.parts = random(100,200);
             break;
@@ -88,10 +89,10 @@ Zombie.prototype.getRandomType = function(ztracker) {
             console.log("Type 5 spawned");
             ztracker.type5++;
             this.color = color(130, 200, 200);
-            this.health = 7500;
-            this.maxHealth = 7500;
-            this.vel = 1.5;
-            this.maxVel = 1.5;
+            this.health = 3000;
+            this.maxHealth = 3000;
+            this.vel = 2.5;
+            this.maxVel = 2.5;
             this.strength = 75;
             this.attackSpeed = 250;
             this.parts = random(75,150);
@@ -100,12 +101,13 @@ Zombie.prototype.getRandomType = function(ztracker) {
             console.log("Type 4 spawned");
             ztracker.type4++;
             this.color = color(255, 130, 200);
-            this.health = 6000;
-            this.maxHealth = 6000;
-            this.vel = 1.25;
-            this.maxVel = 1.25;
-            this.strength = 75;
-            this.attackSpeed = 500;
+            this.health = 1000;
+            this.maxHealth = 1000;
+            this.vel = 2;
+            this.maxVel = 2;
+            this.r = 10;
+            this.strength = 50;
+            this.attackSpeed = 250;
             this.parts = random(50,100);
             break;
         case (chance < (this.playerKills / 5000) && ztracker.type2 > 10):
@@ -114,9 +116,10 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.color = color(130, 0, 130);
             this.health = 4000;
             this.maxHealth = 4000;
-            this.vel = 1;
-            this.maxVel = 1;
-            this.strength = 75;
+            this.vel = .75;
+            this.maxVel = .75;
+            this.r = 24;
+            this.strength = 150;
             this.attackSpeed = 750;
             this.parts = random(30,60);
             break;
@@ -126,8 +129,8 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.color = color(200, 200, 0);
             this.health = 2000;
             this.maxHealth = 2000;
-            this.vel = .75;
-            this.maxVel = .75;
+            this.vel = 1;
+            this.maxVel = 1;
             this.strength = 50;
             this.attackSpeed = 1000;
             this.parts = random(10,20);
@@ -138,8 +141,8 @@ Zombie.prototype.getRandomType = function(ztracker) {
             this.color = color(160, 160, 0);
             this.health = 500;
             this.maxHealth = 500;
-            this.vel = .3;
-            this.maxVel = .3;
+            this.vel = .75;
+            this.maxVel = .75;
             this.strength = 50;
             this.attackSpeed = 1900;
             this.parts = random(5,10);

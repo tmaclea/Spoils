@@ -12,7 +12,6 @@ function Bullet(player, mX, mY) {
 
 Bullet.prototype.fire = function() {
     this.pos.add(this.vel);
-
 }
 
 Bullet.prototype.calculateDamage = function() {
