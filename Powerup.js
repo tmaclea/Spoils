@@ -54,7 +54,7 @@ Powerup.prototype.boost = function(player) {
         case "Agility":
             orig = player.vel;
             player.vel = 3.5;
-            player.boosted = true;
+            player.boosted = "vel";
             player.powerupText = "Active: Agility";
             setTimeout(() => { 
                 player.vel = orig;
@@ -65,7 +65,7 @@ Powerup.prototype.boost = function(player) {
         case "Damage":
             orig = player.damage;
             player.damage = orig*2;
-            player.boosted = true;
+            player.boosted = "damage";
             player.powerupText = "Active: Damage x2";
             setTimeout(() => { 
                 player.damage = orig;
@@ -78,7 +78,7 @@ Powerup.prototype.boost = function(player) {
             var origMax = player.maxHealth;
             player.health = 9999999;
             player.maxHealth = 9999999;
-            player.boosted = true;
+            player.boosted = "maxHealth";
             player.powerupText = "Active: Invincibility";
             setTimeout(() => { 
                 player.health = orig; 

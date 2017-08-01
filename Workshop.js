@@ -17,7 +17,7 @@ Workshop.prototype.upgrades =
         "posX": 130,
         "posY": 150,
         "upgrade": 0,
-        "maxUpgrade": 13,
+        "maxUpgrade": 8,
         "cost": 10
     },
     {
@@ -171,15 +171,19 @@ Workshop.prototype.getUpgradeProgress = function(item, player) {
 
 Workshop.prototype.buy = function(player) {
     var item;
+    //get the item
     for(var i = 0; i < this.upgrades.item.length; i++) {
         if(this.upgrades.item[i].selected) {
             item = this.upgrades.item[i];
         }
     }
+
     if(this.getUpgradeProgress(item, player) >= 1) {
         this.helpText = "Item fully upgraded.";
     } else if(player.parts < item.cost) {
         this.helpText = "You cannot afford this.";
+    } else if (player.boosted == item.name) {
+        this.helpText = "Not while boosted.";
     } else {
         item.upgrade++;
         player.parts -= item.cost;
@@ -265,9 +269,9 @@ Workshop.prototype.close = function() {
 Workshop.prototype.reset = function() {
     this.upgrades.item[0].cost = 10;
     this.upgrades.item[1].cost = 10;
-    this.upgrades.item[2].cost = 10;
+    this.upgrades.item[2].cost = 15;
     this.upgrades.item[3].cost = 25;
-    this.upgrades.item[4].cost = 10;
+    this.upgrades.item[4].cost = 20;
     this.upgrades.item[5].cost = 10;
 
 
