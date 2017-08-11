@@ -10,7 +10,8 @@ var workshopOpen = false;
 var paused = false;
 var wave = 0;
 var newWave = false;
-var fcount = 100; //counts frames
+var fcount = 100; //counts frames for wave text
+var fhurt = 10; //counts frames for hurt animation
 var canShoot = true;
 
 function setup() {
@@ -60,6 +61,9 @@ function draw() {
         zombies[i].move(player.pos.x, player.pos.y);
 
         if(zombies[i].isInRange(player)) {
+            if(zombies[i].canAttack){
+                fhurt = 0;
+            }
             zombies[i].attack(player);
         }
         
@@ -78,6 +82,16 @@ function draw() {
             }
             zombies.splice(i, 1);
         }
+    }
+
+    //hurt animation
+    if(fhurt < 10) {
+        push();
+            var c = color(255,0,0,100 - fhurt*10);
+            fill(c);
+            rect(player.pos.x-300,player.pos.y-300,height,width);
+        pop();
+        fhurt++;
     }
 
     //when wave is over, start new wave
@@ -251,6 +265,7 @@ function restart() {
     playerDead = false;
     player.startOver();
     workshop.reset();
+    ztracker.reset();
     
     //kill all zombies and reset wave
     for(var i = zombies.length; i >= 0; i--) {
