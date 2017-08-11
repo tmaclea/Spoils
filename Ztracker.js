@@ -7,3 +7,11 @@ function Ztracker() {
     this.type4 = 0;
     this.type5 = 0;
 }
+
+Ztracker.prototype.reset = function() {
+    this.type1 = 0;
+    this.type2 = 0;
+    this.type3 = 0;
+    this.type4 = 0;
+    this.type5 = 0;
+}
